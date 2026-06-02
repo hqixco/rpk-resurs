@@ -2737,14 +2737,75 @@ img {
 }
 
 @media (max-width: 480px) {
+  .contacts-panel .container {
+    width: min(100% - 12px, 1360px);
+  }
+
   .works-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .advantages-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .advantage-card {
+    gap: 8px;
+    padding: 14px 10px 16px;
+    border-radius: 14px;
+  }
+
+  .advantage-card__image {
+    width: 58px;
+    height: 58px;
+  }
+
+  .advantage-card h3 {
+    font-size: 15px;
+  }
+
+  .advantage-card p {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .contacts-panel__contacts {
+    grid-template-columns: 1fr;
     gap: 10px;
   }
 
   .process-row {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 10px;
+  }
+
+  .process-card {
+    padding: 12px 12px 14px;
+    gap: 8px;
+  }
+
+  .process-card__number {
+    min-height: 20px;
+    padding: 4px 7px;
+    margin-bottom: 6px;
+    font-size: 11px;
+  }
+
+  .process-card__icon {
+    width: 62px;
+    margin: 6px auto 8px;
+  }
+
+  .process-card h3 {
+    font-size: 14px;
+    line-height: 1.15;
+  }
+
+  .process-card p {
+    font-size: 11px;
+    line-height: 1.3;
   }
 
   .hero__kicker {
@@ -2776,6 +2837,7 @@ img {
     padding: 0 18px;
     font-size: 14px;
     line-height: 1.1;
+    text-align: center;
   }
 
   .hero__kicker-label {
@@ -2822,6 +2884,12 @@ img {
     padding-right: 16px;
   }
 
+  .process-card {
+    padding: 10px 10px 12px;
+    gap: 6px;
+    border-radius: 14px;
+  }
+
   .service-card {
     gap: 14px;
   }
@@ -2836,6 +2904,59 @@ img {
   }
 
   .contacts-panel__card {
-    padding: 22px;
+    padding: 18px 16px;
+  }
+
+  .contacts-panel__phone {
+    font-size: 18px;
+  }
+
+  .contacts-panel__content {
+    gap: 10px;
+  }
+
+  .contacts-panel__map {
+    border-radius: 22px;
+  }
+
+  .site-footer-bottom {
+    padding: 18px 0 26px;
+  }
+
+  .site-footer-bottom__inner {
+    gap: 14px;
+    padding-top: 12px;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .site-footer-bottom__logo {
+    width: 96px;
+  }
+
+  .site-footer-bottom__brand {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .site-footer-bottom__brand-text {
+    font-size: 12px;
+    line-height: 1.3;
+  }
+
+  .site-footer-bottom__privacy {
+    justify-self: center;
+    font-size: 12px;
+  }
+
+  .site-footer-bottom__actions {
+    gap: 4px;
+    align-items: center;
+    justify-self: center;
+  }
+
+  .site-footer-bottom__phone {
+    font-size: 15px;
   }
 }
