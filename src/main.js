@@ -3,6 +3,23 @@ import './styles.css';
 const quizStage = document.querySelector('[data-quiz-stage]');
 const quizStepLabel = document.querySelector('[data-quiz-step-label]');
 const quizProgress = document.querySelector('.quiz-panel__progress');
+const assetModules = import.meta.glob('../assets/**/*.{png,jpg,jpeg,svg}', {
+  eager: true,
+  import: 'default',
+});
+
+const resolveAssetPath = (path) => {
+  if (!path) return '';
+  if (/^(?:https?:|data:|blob:)/.test(path)) return path;
+
+  const candidate = path.startsWith('/assets/')
+    ? `..${path}`
+    : path.startsWith('../')
+      ? path
+      : `../${path}`;
+
+  return assetModules[candidate] || path;
+};
 
 if (quizStage && quizStepLabel && quizProgress) {
   const assetUrl = (fileName) => new URL(`../assets/${fileName}`, import.meta.url).href;
@@ -300,97 +317,97 @@ if (worksShowcase instanceof HTMLElement && worksLightbox instanceof HTMLElement
       title: 'Фото 1',
       thumbClass: 'works-lightbox__thumb--gallery-01',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-01.jpg") center 24%/contain no-repeat',
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-01.jpg')}") center 24%/contain no-repeat`,
     },
     {
       title: 'Фото 2',
       thumbClass: 'works-lightbox__thumb--gallery-21',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-21.jpg") center 18%/contain no-repeat',
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-21.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 3',
       thumbClass: 'works-lightbox__thumb--gallery-03',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-03.jpg") center 16%/contain no-repeat',
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-03.jpg')}") center 16%/contain no-repeat`,
     },
     {
       title: 'Фото 4',
       thumbClass: 'works-lightbox__thumb--gallery-19',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-19.jpg") center 18%/contain no-repeat',
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-19.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 5',
       thumbClass: 'works-lightbox__thumb--gallery-20',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-20.jpg") center 20%/contain no-repeat',
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-20.jpg')}") center 20%/contain no-repeat`,
     },
     {
       title: 'Фото 6',
       thumbClass: 'works-lightbox__thumb--gallery-04',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-04.jpg") center 18%/contain no-repeat',
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-04.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 7',
       thumbClass: 'works-lightbox__thumb--gallery-18',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-18.jpg") center 20%/contain no-repeat',
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-18.jpg')}") center 20%/contain no-repeat`,
     },
     {
       title: 'Фото 8',
       thumbClass: 'works-lightbox__thumb--gallery-06',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-06.jpg") center 18%/contain no-repeat',
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-06.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 9',
       thumbClass: 'works-lightbox__thumb--gallery-10',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-10.jpg") center 18%/contain no-repeat' ,
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-10.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 10',
       thumbClass: 'works-lightbox__thumb--gallery-11',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-11.jpg") center 18%/contain no-repeat' ,
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-11.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 11',
       thumbClass: 'works-lightbox__thumb--gallery-12',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-12.jpg") center 18%/contain no-repeat' ,
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-12.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 12',
       thumbClass: 'works-lightbox__thumb--gallery-13',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-13.jpg") center 18%/contain no-repeat' ,
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-13.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 13',
       thumbClass: 'works-lightbox__thumb--gallery-14',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-14.jpg") center 18%/contain no-repeat' ,
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-14.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 14',
       thumbClass: 'works-lightbox__thumb--gallery-15',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-15.jpg") center 18%/contain no-repeat' ,
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-15.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 15',
       thumbClass: 'works-lightbox__thumb--gallery-16',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-16.jpg") center 18%/contain no-repeat' ,
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-16.jpg')}") center 18%/contain no-repeat`,
     },
     {
       title: 'Фото 16',
       thumbClass: 'works-lightbox__thumb--gallery-17',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-17.jpg") center 18%/contain no-repeat' ,
+        `linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("${resolveAssetPath('/assets/gallery/gallery-17.jpg')}") center 18%/contain no-repeat`,
     }
   ];
 
@@ -404,7 +421,10 @@ if (worksShowcase instanceof HTMLElement && worksLightbox instanceof HTMLElement
   const parseWorkCardSliderItems = (slider) => {
     try {
       const raw = slider.getAttribute('data-work-card-slider-images');
-      return raw ? JSON.parse(raw) : [];
+      return raw ? JSON.parse(raw).map((item) => ({
+        ...item,
+        image: resolveAssetPath(item.image),
+      })) : [];
     } catch {
       return [];
     }
@@ -433,8 +453,8 @@ if (worksShowcase instanceof HTMLElement && worksLightbox instanceof HTMLElement
 
   const buildWorkCardLightboxItem = (source) => {
     const image = source instanceof HTMLElement
-      ? source.getAttribute('data-work-card-image') || ''
-      : source?.image || '';
+      ? resolveAssetPath(source.getAttribute('data-work-card-image') || '')
+      : resolveAssetPath(source?.image || '');
     const position = source instanceof HTMLElement
       ? source.getAttribute('data-work-card-position') || '50% 50%'
       : source?.position || '50% 50%';
@@ -494,6 +514,29 @@ if (worksShowcase instanceof HTMLElement && worksLightbox instanceof HTMLElement
   };
 
   syncShowcaseRadio(0);
+
+  const normalizeWorkCardAssets = () => {
+    workCardOpenButtons.forEach((button) => {
+      const image = resolveAssetPath(button.getAttribute('data-work-card-image') || '');
+      if (image) {
+        button.setAttribute('data-work-card-image', image);
+      }
+    });
+
+    workCardSliderButtons.forEach((slider) => {
+      const items = parseWorkCardSliderItems(slider).map((item) => ({
+        ...item,
+        image: resolveAssetPath(item.image),
+      }));
+
+      if (items.length) {
+        slider.setAttribute('data-work-card-slider-images', JSON.stringify(items));
+        updateWorkCardSlider(slider, Number(slider.dataset.workCardSliderIndex || 0));
+      }
+    });
+  };
+
+  normalizeWorkCardAssets();
 
   const renderWorksLightbox = () => {
     const item = lightboxMode === 'custom' ? customLightboxItems[customLightboxIndex] : items[activeIndex];
