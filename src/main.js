@@ -5,19 +5,21 @@ const quizStepLabel = document.querySelector('[data-quiz-step-label]');
 const quizProgress = document.querySelector('.quiz-panel__progress');
 
 if (quizStage && quizStepLabel && quizProgress) {
+  const assetUrl = (fileName) => new URL(`../assets/${fileName}`, import.meta.url).href;
+
   const serviceIcons = {
-    light: '/assets/quiz-format-light-sign.jpg',
-    letters: '/assets/quiz-format-volume-letters.jpg',
-    store: '/assets/quiz-business-store.jpg',
-    cafe: '/assets/quiz-business-cafe.jpg',
-    salon: '/assets/quiz-business-salon.jpg',
-    office: '/assets/quiz-business-office.jpg',
-    clinic: '/assets/quiz-business-clinic.jpg',
-    other: '/assets/quiz-business-other.jpg',
-    entrance: '/assets/quiz-format-entrance-group.jpg',
-    facade: '/assets/quiz-format-facade-design.jpg',
-    interior: '/assets/quiz-format-interior-sign.jpg',
-    navigation: '/assets/service-navigation-icon.png',
+    light: assetUrl('quiz-format-light-sign.jpg'),
+    letters: assetUrl('quiz-format-volume-letters.jpg'),
+    store: assetUrl('quiz-business-store.jpg'),
+    cafe: assetUrl('quiz-business-cafe.jpg'),
+    salon: assetUrl('quiz-business-salon.jpg'),
+    office: assetUrl('quiz-business-office.jpg'),
+    clinic: assetUrl('quiz-business-clinic.jpg'),
+    other: assetUrl('quiz-business-other.jpg'),
+    entrance: assetUrl('quiz-format-entrance-group.jpg'),
+    facade: assetUrl('quiz-format-facade-design.jpg'),
+    interior: assetUrl('quiz-format-interior-sign.jpg'),
+    navigation: assetUrl('service-navigation-icon.png'),
   };
 
   const steps = [
