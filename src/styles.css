@@ -255,7 +255,9 @@ img {
 }
 
 .hero__copy {
-  width: 640px;
+  width: 100%;
+  max-width: 640px;
+  min-width: 0;
   grid-column: 1;
   grid-row: 1;
 }
