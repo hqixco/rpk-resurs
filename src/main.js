@@ -1,4 +1,4 @@
-﻿import './styles.css';
+import './styles.css';
 
 const quizStage = document.querySelector('[data-quiz-stage]');
 const quizStepLabel = document.querySelector('[data-quiz-step-label]');
@@ -108,11 +108,11 @@ if (quizStage && quizStepLabel && quizProgress) {
       key: 'budget',
       title: 'Какой бюджет рассматриваете?',
       options: [
-        'До 30 000 ₽',
-        '30 000–60 000 ₽',
-        '60 000–100 000 ₽',
-        '100 000–200 000 ₽',
-        'Более 200 000 ₽',
+        'До 30 000 ?',
+        '30 000–60 000 ?',
+        '60 000–100 000 ?',
+        '100 000–200 000 ?',
+        'Более 200 000 ?',
         'Хочу сначала понять стоимость',
       ],
     },
@@ -300,97 +300,97 @@ if (worksShowcase instanceof HTMLElement && worksLightbox instanceof HTMLElement
       title: 'Фото 1',
       thumbClass: 'works-lightbox__thumb--gallery-01',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-01.png") center 24%/contain no-repeat',
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-01.jpg") center 24%/contain no-repeat',
     },
     {
       title: 'Фото 2',
       thumbClass: 'works-lightbox__thumb--gallery-21',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-21.png") center 18%/contain no-repeat',
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-21.jpg") center 18%/contain no-repeat',
     },
     {
       title: 'Фото 3',
       thumbClass: 'works-lightbox__thumb--gallery-03',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-03.png") center 16%/contain no-repeat',
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-03.jpg") center 16%/contain no-repeat',
     },
     {
       title: 'Фото 4',
       thumbClass: 'works-lightbox__thumb--gallery-19',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-19.png") center 18%/contain no-repeat',
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-19.jpg") center 18%/contain no-repeat',
     },
     {
       title: 'Фото 5',
       thumbClass: 'works-lightbox__thumb--gallery-20',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-20.png") center 20%/contain no-repeat',
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-20.jpg") center 20%/contain no-repeat',
     },
     {
       title: 'Фото 6',
       thumbClass: 'works-lightbox__thumb--gallery-04',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-04.png") center 18%/contain no-repeat',
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-04.jpg") center 18%/contain no-repeat',
     },
     {
       title: 'Фото 7',
       thumbClass: 'works-lightbox__thumb--gallery-18',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-18.png") center 20%/contain no-repeat',
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-18.jpg") center 20%/contain no-repeat',
     },
     {
       title: 'Фото 8',
       thumbClass: 'works-lightbox__thumb--gallery-06',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-06.png") center 18%/contain no-repeat',
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-06.jpg") center 18%/contain no-repeat',
     },
     {
       title: 'Фото 9',
       thumbClass: 'works-lightbox__thumb--gallery-10',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-10.png") center 18%/contain no-repeat' ,
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-10.jpg") center 18%/contain no-repeat' ,
     },
     {
       title: 'Фото 10',
       thumbClass: 'works-lightbox__thumb--gallery-11',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-11.png") center 18%/contain no-repeat' ,
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-11.jpg") center 18%/contain no-repeat' ,
     },
     {
       title: 'Фото 11',
       thumbClass: 'works-lightbox__thumb--gallery-12',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-12.png") center 18%/contain no-repeat' ,
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-12.jpg") center 18%/contain no-repeat' ,
     },
     {
       title: 'Фото 12',
       thumbClass: 'works-lightbox__thumb--gallery-13',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-13.png") center 18%/contain no-repeat' ,
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-13.jpg") center 18%/contain no-repeat' ,
     },
     {
       title: 'Фото 13',
       thumbClass: 'works-lightbox__thumb--gallery-14',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-14.png") center 18%/contain no-repeat' ,
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-14.jpg") center 18%/contain no-repeat' ,
     },
     {
       title: 'Фото 14',
       thumbClass: 'works-lightbox__thumb--gallery-15',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-15.png") center 18%/contain no-repeat' ,
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-15.jpg") center 18%/contain no-repeat' ,
     },
     {
       title: 'Фото 15',
       thumbClass: 'works-lightbox__thumb--gallery-16',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-16.png") center 18%/contain no-repeat' ,
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-16.jpg") center 18%/contain no-repeat' ,
     },
     {
       title: 'Фото 16',
       thumbClass: 'works-lightbox__thumb--gallery-17',
       mediaBackground:
-        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-17.png") center 18%/contain no-repeat' ,
+        'linear-gradient(180deg, rgba(7, 11, 27, 0.08), rgba(7, 11, 27, 0.08)), url("/assets/gallery/gallery-17.jpg") center 18%/contain no-repeat' ,
     }
   ];
 
