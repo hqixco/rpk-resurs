@@ -20,21 +20,32 @@
         history.scrollRestoration = 'manual';
       }
 
-      if (window.location.hash === '#quiz') {
+      if (window.location.hash) {
         history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
       }
 
-      window.scrollTo(0, 0);
+      const resetInitialScroll = () => {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      };
+
+      resetInitialScroll();
 
       const finishInitialPosition = () => {
-        window.scrollTo(0, 0);
+        resetInitialScroll();
         requestAnimationFrame(() => {
-          document.documentElement.classList.remove('is-initializing');
+          resetInitialScroll();
+          requestAnimationFrame(() => {
+            resetInitialScroll();
+            document.documentElement.classList.remove('is-initializing');
+          });
         });
       };
 
       window.addEventListener('DOMContentLoaded', finishInitialPosition, { once: true });
       window.addEventListener('pageshow', finishInitialPosition, { once: true });
+      window.addEventListener('load', finishInitialPosition, { once: true });
     </script>
     <script type="module" src="/src/main.js"></script>
   </head>
