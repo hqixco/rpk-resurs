@@ -335,6 +335,8 @@ if (quizStage && quizStepLabel && quizProgress) {
     facade: assetUrl('quiz-format-facade-design.jpg'),
     interior: assetUrl('quiz-format-interior-sign.jpg'),
     navigation: assetUrl('quiz-format-navigation-sign.png'),
+    standalone: assetUrl('voltage-service-1.jpg'),
+    undecided: assetUrl('quiz-business-other.jpg'),
   };
 
   const steps = [
@@ -355,12 +357,12 @@ if (quizStage && quizStepLabel && quizProgress) {
       key: 'place',
       title: 'Где будет установлена вывеска?',
       options: [
-        'На фасаде здания',
-        'Над входом',
-        'В торговом центре',
-        'Внутри помещения',
-        'На отдельно стоящей конструкции',
-        'Ещё не определились',
+        { label: 'На фасаде здания', icon: serviceIcons.facade },
+        { label: 'Над входом', icon: serviceIcons.entrance },
+        { label: 'В торговом центре', icon: serviceIcons.store },
+        { label: 'Внутри помещения', icon: serviceIcons.interior },
+        { label: 'На отдельно стоящей конструкции', icon: serviceIcons.standalone },
+        { label: 'Ещё не определились', icon: serviceIcons.undecided },
         { label: 'Загрузите фото фасада или места установки', icon: '/assets/add-image.svg' },
       ],
     },
@@ -499,7 +501,7 @@ if (quizStage && quizStepLabel && quizProgress) {
 
   const renderStep = () => {
     const step = steps[currentStep];
-    const useImageLayout = step.key === 'format';
+    const useImageLayout = step.key === 'format' || step.key === 'place';
     const cardTop = quizCard.querySelector('.quiz-panel__card-top');
 
     if (cardTop instanceof HTMLElement) {
