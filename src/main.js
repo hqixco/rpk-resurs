@@ -119,6 +119,7 @@ if (heroMiniForm instanceof HTMLFormElement) {
   const buttonLabel = heroMiniForm.querySelector('[data-hero-button-label]');
   const timerNode = heroMiniForm.querySelector('[data-hero-timer]');
   const successText = heroMiniForm.querySelector('[data-hero-success-text]');
+  const consentInput = heroMiniForm.querySelector('[data-hero-consent]');
   const headerPhone = document.querySelector('.header__contacts .phone')?.textContent?.trim() || '';
   let currentHeroStage = 'upload';
   let heroTimerId = null;
@@ -200,6 +201,11 @@ if (heroMiniForm instanceof HTMLFormElement) {
     if (currentHeroStage === 'phone') {
       if (!phoneInput?.value.trim()) {
         phoneInput?.focus();
+        return;
+      }
+
+      if (consentInput instanceof HTMLInputElement && !consentInput.checked) {
+        consentInput.focus();
         return;
       }
 
@@ -335,8 +341,8 @@ if (quizStage && quizStepLabel && quizProgress) {
     facade: assetUrl('quiz-format-facade-design.jpg'),
     interior: assetUrl('quiz-format-interior-sign.jpg'),
     navigation: assetUrl('quiz-format-navigation-sign.png'),
-    standalone: assetUrl('voltage-service-1.jpg'),
-    undecided: assetUrl('quiz-business-other.jpg'),
+    standalone: assetUrl('quiz-business-other.jpg'),
+    undecided: assetUrl('quiz-question.jpg'),
   };
 
   const steps = [
@@ -346,7 +352,7 @@ if (quizStage && quizStepLabel && quizProgress) {
       options: [
         { label: 'Световая вывеска', icon: serviceIcons.light },
         { label: 'Объёмные буквы', icon: serviceIcons.letters },
-        { label: 'Световой короб', icon: serviceIcons.light },
+        { label: 'Световой короб', icon: serviceIcons.salon },
         { label: 'Оформление фасада или входной группы', icon: serviceIcons.facade },
         { label: 'Интерьерная вывеска', icon: serviceIcons.interior },
         { label: 'Навигация, таблички, указатели', icon: serviceIcons.navigation },
@@ -538,7 +544,7 @@ if (quizStage && quizStepLabel && quizProgress) {
             </fieldset>
             <label class="quiz-panel__consent">
               <input type="checkbox" name="consent" checked />
-              <span>Нажимая кнопку, вы соглашаетесь с <a href="#contacts">политикой конфиденциальности</a></span>
+              <span>Нажимая кнопку, вы соглашаетесь с <a href="/privacy-policy/index.html" target="_blank" rel="noreferrer">политикой конфиденциальности</a></span>
             </label>
             ${state.placePhoto instanceof File ? `<p class="quiz-panel__file-note">Фото приложено: ${state.placePhoto.name}</p>` : ''}
           </div>

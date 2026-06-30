@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <title>Политика конфиденциальности | РПК Ресурс</title>
+    <meta
+      name="description"
+      content="Политика конфиденциальности и обработки персональных данных сайта РПК Ресурс."
+    />
+    <style>
+      :root {
+        --bg: #f5f4f2;
+        --text: #19181d;
+        --muted: #6d6675;
+        --accent: #6d2ff1;
+        --accent-2: #d64cf0;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, Arial, Helvetica, sans-serif;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      .container {
+        width: min(1360px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        padding: 14px 0 13px;
+        background: rgba(10, 12, 24, 0.9);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        box-shadow: 0 12px 34px rgba(7, 9, 20, 0.24);
+      }
+
+      .header__inner {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 24px;
+      }
+
+      .brand {
+        display: inline-flex;
+        align-items: center;
+      }
+
+      .brand__logo {
+        width: 144px;
+        height: auto;
+      }
+
+      .header__descriptor {
+        margin: 0;
+        max-width: 320px;
+        color: rgba(255, 255, 255, 0.78);
+        font-size: 13px;
+        line-height: 1.35;
+      }
+
+      .header__actions {
+        display: grid;
+        grid-template-columns: repeat(3, max-content);
+        align-items: center;
+        gap: 18px 24px;
+        justify-self: end;
+      }
+
+      .header__contacts {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 8px;
+      }
+
+      .phone {
+        color: #fff;
+        font-weight: 700;
+        font-size: 16px;
+        white-space: nowrap;
+      }
+
+      .max-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        white-space: nowrap;
+        opacity: 0.9;
+      }
+
+      .button__icon {
+        width: 30px;
+        height: 30px;
+        object-fit: contain;
+      }
+
+      .header__address {
+        margin: 0;
+        color: rgba(255, 255, 255, 0.88);
+        font-style: normal;
+        font-size: 13px;
+        line-height: 1.25;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        padding: 0 20px;
+        border: 0;
+        border-radius: 10px;
+        font-size: 14px;
+        font-weight: 700;
+        color: #fff;
+        background: linear-gradient(180deg, #b75cf7 0%, #8a3df4 100%);
+        box-shadow: 0 10px 30px rgba(116, 47, 241, 0.18);
+      }
+
+      .tech-page {
+        padding: 48px 0 72px;
+      }
+
+      .tech-page__content {
+        max-width: 980px;
+      }
+
+      .tech-page h1 {
+        margin: 0 0 18px;
+        font-size: clamp(34px, 4vw, 54px);
+        line-height: 1.05;
+      }
+
+      .tech-page h2 {
+        margin: 30px 0 14px;
+        font-size: clamp(22px, 2.3vw, 30px);
+        line-height: 1.12;
+      }
+
+      .tech-page p,
+      .tech-page ul {
+        margin: 0 0 14px;
+        font-size: 16px;
+        line-height: 1.65;
+      }
+
+      .tech-page ul {
+        padding-left: 22px;
+      }
+
+      .tech-page__note {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      .site-footer-bottom {
+        padding: 22px 0 28px;
+        background: linear-gradient(180deg, #16131d 0%, #0f0c16 100%);
+        color: #fff;
+      }
+
+      .site-footer-bottom__inner {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        align-items: center;
+        gap: 22px;
+      }
+
+      .site-footer-bottom__brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .site-footer-bottom__logo {
+        width: 132px;
+      }
+
+      .site-footer-bottom__brand-text {
+        color: rgba(255, 255, 255, 0.76);
+        font-size: 13px;
+        line-height: 1.25;
+      }
+
+      .site-footer-bottom__legal {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        justify-self: center;
+      }
+
+      .site-footer-bottom__privacy {
+        color: rgba(255, 255, 255, 0.94);
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+      }
+
+      .site-footer-bottom__actions {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+        justify-self: end;
+      }
+
+      .site-footer-bottom__phone {
+        color: #fff;
+        font-size: 16px;
+        font-weight: 800;
+        line-height: 1.1;
+        white-space: nowrap;
+      }
+
+      .site-footer-bottom .max-link {
+        color: #fff;
+      }
+
+      @media (max-width: 1000px) {
+        .header__inner {
+          grid-template-columns: 1fr;
+          justify-items: center;
+          text-align: center;
+        }
+
+        .header__actions {
+          grid-template-columns: 1fr;
+          justify-self: center;
+        }
+
+        .header__contacts {
+          align-items: center;
+        }
+
+        .tech-page {
+          padding: 36px 0 56px;
+        }
+
+        .site-footer-bottom__inner {
+          grid-template-columns: 1fr;
+          justify-items: center;
+          text-align: center;
+        }
+
+        .site-footer-bottom__actions {
+          align-items: center;
+          justify-self: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="container header__inner">
+        <a class="brand" href="/" aria-label="РПК Ресурс">
+          <img class="brand__logo" src="/assets/company-logo.svg" alt="РПК Ресурс" />
+        </a>
+
+        <p class="header__descriptor">
+          Световые вывески, объемные буквы и оформление фасадов в Нижнем Новгороде
+        </p>
+
+        <div class="header__actions">
+          <div class="header__contacts">
+            <a class="phone" href="tel:+79306697306">+7 (930) 669-73-06</a>
+            <a class="max-link" href="https://max.ru/" target="_blank" rel="noreferrer">
+              <img class="button__icon" src="/assets/max-icon.svg" alt="" aria-hidden="true" />
+              <span>Написать в MAX</span>
+            </a>
+          </div>
+          <address class="header__address">г. Нижний Новгород, ул. Красная Слобода, 9А</address>
+          <a class="button" href="/index.html#quiz">Получить расчет</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="tech-page">
+      <div class="container">
+        <div class="tech-page__content">
+          <h1>Политика конфиденциальности</h1>
+          <p class="tech-page__note">Редакция от 30 июня 2026 года</p>
+          <p>
+            Настоящая Политика определяет порядок обработки и защиты персональных данных,
+            которые сайт <strong>https://рпк-ресурс.рф/</strong> может получить от
+            пользователя при посещении сайта, заполнении форм, отправке заявки, запросе
+            расчета, а также при обращении по телефону, электронной почте или через
+            мессенджеры.
+          </p>
+
+          <h2>1. Общие положения</h2>
+          <p>
+            1.1. Оператором персональных данных является сайт РПК «Ресурс» и лица,
+            уполномоченные им на обработку обращений пользователей.
+          </p>
+          <p>
+            <strong>Оператор:</strong> РПК «Ресурс»<br />
+            <strong>Адрес:</strong> г. Нижний Новгород, ул. Красная Слобода, 9А<br />
+            <strong>Электронная почта:</strong> resurs_mi@mail.ru<br />
+            <strong>Телефон:</strong> +7 (930) 669-73-06<br />
+            <strong>Сайт:</strong> https://рпк-ресурс.рф/
+          </p>
+          <p>1.2. Далее по тексту Оператор и пользователь совместно именуются Сторонами.</p>
+          <p>
+            1.3. Политика разработана в соответствии с Федеральным законом от 27.07.2006
+            № 152-ФЗ «О персональных данных» и иными нормативными правовыми актами
+            Российской Федерации.
+          </p>
+          <p>
+            1.4. Использование сайта без заполнения форм возможно без указания имени,
+            телефона и адреса электронной почты, однако сайт может автоматически получать
+            технические данные, необходимые для его работы и анализа посещаемости.
+          </p>
+          <p>
+            1.5. Оператор не осуществляет обработку специальных категорий персональных
+            данных, касающихся расовой и национальной принадлежности, политических
+            взглядов, религиозных или философских убеждений, состояния здоровья и
+            интимной жизни.
+          </p>
+
+          <h2>2. Какие данные могут обрабатываться</h2>
+          <p>2.1. Пользователь может добровольно предоставить следующие данные:</p>
+          <ul>
+            <li>имя;</li>
+            <li>номер телефона;</li>
+            <li>адрес электронной почты;</li>
+            <li>предпочтительный способ связи;</li>
+            <li>сведения о компании, объекте, адресе монтажа или размещения вывески;</li>
+            <li>параметры заказа, тиража, конструкции, сроков и бюджета;</li>
+            <li>фотографии, макеты, комментарии и иные файлы, которые пользователь прикладывает к заявке.</li>
+          </ul>
+          <p>2.2. При посещении сайта автоматически могут обрабатываться технические данные:</p>
+          <ul>
+            <li>IP-адрес;</li>
+            <li>тип устройства, браузера и операционной системы;</li>
+            <li>дата и время посещения;</li>
+            <li>адреса посещенных страниц;</li>
+            <li>источник перехода на сайт;</li>
+            <li>действия пользователя на страницах;</li>
+            <li>файлы cookie и технические идентификаторы;</li>
+            <li>данные, собираемые сервисами интернет-статистики.</li>
+          </ul>
+
+          <h2>3. Цели обработки персональных данных</h2>
+          <p>Оператор обрабатывает персональные данные в следующих целях:</p>
+          <ul>
+            <li>обработка заявок, звонков и обращений пользователей;</li>
+            <li>подготовка консультации, расчета стоимости или коммерческого предложения;</li>
+            <li>уточнение параметров вывески, монтажа и сроков исполнения заказа;</li>
+            <li>согласование выезда специалиста, замера или монтажа;</li>
+            <li>подготовка, заключение и исполнение договора;</li>
+            <li>обратная связь с пользователем по телефону, email и через мессенджеры;</li>
+            <li>улучшение качества сайта, сервиса и рекламных кампаний;</li>
+            <li>обеспечение безопасности и стабильной работы сайта.</li>
+          </ul>
+
+          <h2>4. Правовые основания обработки</h2>
+          <p>Правовыми основаниями обработки персональных данных являются:</p>
+          <ul>
+            <li>Федеральный закон от 27.07.2006 № 152-ФЗ «О персональных данных»;</li>
+            <li>согласие пользователя на обработку персональных данных;</li>
+            <li>действия, необходимые для заключения договора по инициативе пользователя;</li>
+            <li>исполнение договора, если он заключен между пользователем и Оператором;</li>
+            <li>законные интересы Оператора при условии соблюдения прав и свобод пользователя.</li>
+          </ul>
+
+          <h2>5. Порядок обработки и хранения</h2>
+          <p>
+            5.1. Обработка персональных данных может осуществляться автоматизированным,
+            неавтоматизированным или смешанным способом.
+          </p>
+          <p>5.2. Оператор вправе осуществлять сбор, запись, систематизацию, хранение, уточнение, использование, передачу в необходимом объеме, обезличивание, блокирование и удаление данных.</p>
+          <p>
+            5.3. Оператор обрабатывает только те данные, которые необходимы для достижения
+            указанных в настоящей Политике целей.
+          </p>
+          <p>
+            5.4. Персональные данные обрабатываются до достижения целей обработки, отзыва
+            согласия пользователем либо возникновения иных законных оснований для
+            прекращения обработки.
+          </p>
+          <p>
+            5.5. После достижения целей обработки либо отзыва согласия персональные данные
+            удаляются или уничтожаются, если их дальнейшее хранение не требуется по закону
+            или договору.
+          </p>
+
+          <h2>6. Передача данных третьим лицам</h2>
+          <p>
+            6.1. Оператор не продает персональные данные и не передает их третьим лицам
+            для самостоятельного использования в рекламных целях.
+          </p>
+          <p>6.2. Передача данных допускается:</p>
+          <ul>
+            <li>с согласия пользователя;</li>
+            <li>для обработки заявки и связи с пользователем;</li>
+            <li>для исполнения договора и организации работ;</li>
+            <li>поставщикам хостинга, технической поддержки и аналитических сервисов;</li>
+            <li>сервисам телефонии, email-рассылок и мессенджерам, если пользователь выбрал такой способ связи;</li>
+            <li>государственным органам в случаях, предусмотренных законодательством Российской Федерации.</li>
+          </ul>
+
+          <h2>7. Cookie и аналитика</h2>
+          <p>
+            7.1. На сайте могут использоваться файлы cookie, необходимые для корректной
+            работы сайта, сохранения настроек и анализа посещаемости.
+          </p>
+          <p>
+            7.2. На сайте может использоваться сервис веб-аналитики, включая Яндекс
+            Метрику, который получает обезличенные технические сведения о посещении сайта.
+          </p>
+          <p>
+            7.3. Пользователь может ограничить или запретить использование cookie в
+            настройках своего браузера. В этом случае отдельные функции сайта могут
+            работать некорректно.
+          </p>
+
+          <h2>8. Права пользователя</h2>
+          <p>Пользователь вправе:</p>
+          <ul>
+            <li>получать информацию об обработке его персональных данных;</li>
+            <li>требовать уточнения, обновления или исправления данных;</li>
+            <li>требовать блокирования или уничтожения данных, если они обрабатываются незаконно или более не нужны для заявленных целей;</li>
+            <li>отозвать согласие на обработку персональных данных;</li>
+            <li>обжаловать действия или бездействие Оператора в Роскомнадзор или в судебном порядке;</li>
+            <li>осуществлять иные права, предусмотренные законодательством Российской Федерации.</li>
+          </ul>
+
+          <h2>9. Отзыв согласия и обращения</h2>
+          <p>
+            9.1. Пользователь может отозвать согласие на обработку персональных данных
+            либо направить запрос относительно своих данных по следующим контактам:
+          </p>
+          <ul>
+            <li>по электронной почте: <strong>resurs_mi@mail.ru</strong>;</li>
+            <li>по адресу: <strong>г. Нижний Новгород, ул. Красная Слобода, 9А</strong>.</li>
+          </ul>
+          <p>
+            9.2. В обращении рекомендуется указать имя, контактные данные, содержание
+            требования и сведения, позволяющие идентифицировать обращение через сайт.
+          </p>
+
+          <h2>10. Защита персональных данных</h2>
+          <p>
+            10.1. Оператор принимает необходимые правовые, организационные и технические
+            меры для защиты персональных данных от неправомерного или случайного доступа,
+            изменения, распространения, блокирования, копирования, уничтожения и иных
+            неправомерных действий.
+          </p>
+          <p>
+            10.2. Оператор не может гарантировать абсолютную защищенность информации при
+            ее передаче через сеть Интернет, однако принимает разумные и достаточные меры
+            для снижения соответствующих рисков.
+          </p>
+
+          <h2>11. Актуализация политики</h2>
+          <p>
+            11.1. Оператор вправе вносить изменения в настоящую Политику при изменении
+            законодательства, порядка обработки данных, используемых сервисов или
+            функциональности сайта.
+          </p>
+          <p>11.2. Новая редакция вступает в силу с момента ее публикации на сайте.</p>
+          <p>
+            11.3. Актуальная версия Политики постоянно доступна по адресу:
+            <strong>https://рпк-ресурс.рф/privacy-policy/index.html</strong>
+          </p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer-bottom">
+      <div class="container site-footer-bottom__inner">
+        <a class="site-footer-bottom__brand" href="/index.html#hero" aria-label="РПК Ресурс">
+          <img class="site-footer-bottom__logo" src="/assets/company-logo.svg" alt="РПК Ресурс" />
+          <span class="site-footer-bottom__brand-text">
+            Производство и монтаж<br />
+            наружной рекламы
+          </span>
+        </a>
+
+        <div class="site-footer-bottom__legal">
+          <a class="site-footer-bottom__privacy" href="/privacy-policy/index.html">Политика конфиденциальности</a>
+          <a class="site-footer-bottom__privacy" href="/cookies/index.html">Политика cookie</a>
+        </div>
+
+        <div class="site-footer-bottom__actions">
+          <a class="site-footer-bottom__phone" href="tel:+79306697306">+7 (930) 669-73-06</a>
+          <a class="max-link" href="https://max.ru/" target="_blank" rel="noreferrer">
+            <img class="button__icon" src="/assets/max-icon.svg" alt="" aria-hidden="true" />
+            <span>Написать в MAX</span>
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

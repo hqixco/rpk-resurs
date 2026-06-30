@@ -96,15 +96,24 @@
                   </label>
 
                   <label class="hero-mini-form__phone" data-hero-stage="phone" hidden>
-                    <span class="hero-mini-form__phone-label">Ваш телефон</span>
-                    <input
-                      class="hero-mini-form__phone-input"
-                      type="tel"
-                      name="hero-phone"
-                      placeholder="+7 (___) ___-__-__"
-                      autocomplete="tel"
-                      data-hero-phone
-                    />
+                    <span class="hero-mini-form__phone-main">
+                      <span class="hero-mini-form__phone-label">Ваш телефон</span>
+                      <input
+                        class="hero-mini-form__phone-input"
+                        type="tel"
+                        name="hero-phone"
+                        placeholder="+7 (___) ___-__-__"
+                        autocomplete="tel"
+                        data-hero-phone
+                      />
+                    </span>
+                    <span class="hero-mini-form__consent">
+                      <input type="checkbox" name="hero-consent" checked data-hero-consent />
+                      <span>
+                        Соглашаюсь с
+                        <a href="/privacy-policy/index.html" target="_blank" rel="noreferrer">политикой конфиденциальности</a>
+                      </span>
+                    </span>
                   </label>
 
                   <div class="hero-mini-form__success" data-hero-stage="success" hidden>
@@ -210,6 +219,7 @@
             <article class="service-card">
               <img class="service-card__image" src="/assets/quiz-format-light-sign.jpg" alt="Световая вывеска" loading="lazy" />
               <div class="service-card__content">
+                <span class="service-card__price">от 25 000 ₽</span>
                 <h3 class="service-card__title">Световые вывески</h3>
                 <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость световой вывески">Узнать стоимость</button>
               </div>
@@ -218,6 +228,7 @@
             <article class="service-card">
               <img class="service-card__image" src="/assets/quiz-format-volume-letters.jpg" alt="Объемные буквы" loading="lazy" />
               <div class="service-card__content">
+                <span class="service-card__price">от 35 000 ₽</span>
                 <h3 class="service-card__title">Объемные буквы</h3>
                 <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески из объемных букв">Узнать стоимость</button>
               </div>
@@ -226,6 +237,7 @@
             <article class="service-card">
               <img class="service-card__image" src="/assets/quiz-format-entrance-group.jpg" alt="Входные группы" loading="lazy" />
               <div class="service-card__content">
+                <span class="service-card__price">от 40 000 ₽</span>
                 <h3 class="service-card__title">Входные группы</h3>
                 <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость оформления входной группы">Узнать стоимость</button>
               </div>
@@ -234,6 +246,7 @@
             <article class="service-card">
               <img class="service-card__image" src="/assets/quiz-format-facade-design.jpg" alt="Оформление фасадов" loading="lazy" />
               <div class="service-card__content">
+                <span class="service-card__price">от 30 000 ₽</span>
                 <h3 class="service-card__title">Оформление фасадов</h3>
                 <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость оформления фасада">Узнать стоимость</button>
               </div>
@@ -242,6 +255,7 @@
             <article class="service-card">
               <img class="service-card__image" src="/assets/quiz-format-interior-sign.jpg" alt="Интерьерные вывески" loading="lazy" />
               <div class="service-card__content">
+                <span class="service-card__price">от 18 000 ₽</span>
                 <h3 class="service-card__title">Интерьерные вывески</h3>
                 <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость интерьерной вывески">Узнать стоимость</button>
               </div>
@@ -250,6 +264,7 @@
             <article class="service-card">
               <img class="service-card__image" src="/assets/quiz-format-navigation-sign.png" alt="Навигация и таблички" loading="lazy" />
               <div class="service-card__content">
+                <span class="service-card__price">от 5 000 ₽</span>
                 <h3 class="service-card__title">Навигация и таблички</h3>
                 <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость навигации и табличек">Узнать стоимость</button>
               </div>
@@ -923,20 +938,20 @@
           <div class="process-cta-panel__head">
             <h2 class="section-title process-cta-title" id="process-cta-title">Рассчитайте стоимость вывески по фото за 15 минут</h2>
           </div>
-          <form class="hero-mini-form hero-mini-form--wide hero-mini-form--static" data-process-cta-form>
-            <div class="hero-mini-form__panel" data-process-cta-field>
-              <label class="hero-mini-form__upload">
-                <input class="hero-mini-form__file" type="file" accept="image/*" data-process-cta-file />
-                <span class="hero-mini-form__upload-label">Загрузить фото вывески или фасада</span>
-                <span class="hero-mini-form__upload-note" data-process-cta-file-name>PNG, JPG или WEBP</span>
+          <form class="process-cta-form process-cta-form--wide process-cta-form--static" data-process-cta-form>
+            <div class="process-cta-form__panel" data-process-cta-field>
+              <label class="process-cta-form__upload">
+                <input class="process-cta-form__file" type="file" accept="image/*" data-process-cta-file />
+                <span class="process-cta-form__upload-label">Загрузить фото вывески или фасада</span>
+                <span class="process-cta-form__upload-note" data-process-cta-file-name>PNG, JPG или WEBP</span>
               </label>
             </div>
 
-            <div class="hero-mini-form__panel" data-process-cta-field>
-              <label class="hero-mini-form__phone">
-                <span class="hero-mini-form__phone-label">Ваш телефон</span>
+            <div class="process-cta-form__panel" data-process-cta-field>
+              <label class="process-cta-form__phone">
+                <span class="process-cta-form__phone-label">Ваш телефон</span>
                 <input
-                  class="hero-mini-form__phone-input"
+                  class="process-cta-form__phone-input"
                   type="tel"
                   name="process-cta-phone"
                   placeholder="+7 (___) ___-__-__"
@@ -946,15 +961,15 @@
               </label>
             </div>
 
-            <div class="hero-mini-form__panel hero-mini-form__panel--success" data-process-cta-success hidden>
-              <div class="hero-mini-form__success">
-                <span class="hero-mini-form__check" aria-hidden="true"></span>
-                <span class="hero-mini-form__timer" data-process-cta-timer>15:00</span>
+            <div class="process-cta-form__panel process-cta-form__panel--success" data-process-cta-success hidden>
+              <div class="process-cta-form__success">
+                <span class="process-cta-form__check" aria-hidden="true"></span>
+                <span class="process-cta-form__timer" data-process-cta-timer>15:00</span>
                 <strong data-process-cta-text>Уже рассчитываем вывеску. В ближайшие минуты с Вами свяжется менеджер</strong>
               </div>
             </div>
 
-            <button class="button button--primary hero-mini-form__button" type="submit" data-process-cta-submit>
+            <button class="button button--primary process-cta-form__button" type="submit" data-process-cta-submit>
               <img class="button__icon" src="/assets/hero-button-icon.png" alt="" aria-hidden="true" />
               <span>Рассчитать за 15 минут</span>
             </button>
@@ -1066,7 +1081,7 @@
                   </div>
                 </div>
 
-                <a class="contacts-panel__item contacts-panel__item--link" href="mailto:info@rpk-resurs.ru">
+                <a class="contacts-panel__item contacts-panel__item--link" href="mailto:resurs_mi@mail.ru">
                   <span class="contacts-panel__item-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24">
                       <path d="M4 6h16v12H4z" />
@@ -1075,7 +1090,7 @@
                   </span>
                   <div class="contacts-panel__item-body">
                     <span class="contacts-panel__item-label">Email</span>
-                    <span class="contacts-panel__item-value">info@rpk-resurs.ru</span>
+                    <span class="contacts-panel__item-value">resurs_mi@mail.ru</span>
                   </div>
                 </a>
 
@@ -1120,7 +1135,10 @@
             </span>
           </a>
 
-          <a class="site-footer-bottom__privacy" href="#contacts">Политика конфиденциальности</a>
+          <div class="site-footer-bottom__legal">
+            <a class="site-footer-bottom__privacy" href="/privacy-policy/index.html">Политика конфиденциальности</a>
+            <a class="site-footer-bottom__privacy" href="/cookies/index.html">Политика cookie</a>
+          </div>
 
           <div class="site-footer-bottom__actions">
             <a class="site-footer-bottom__phone" href="tel:+79306697306">+7 (930) 669-73-06</a>

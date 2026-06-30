@@ -35,6 +35,16 @@ async function resolveFile(urlPath) {
   if (existsSync(fullPath)) {
     const fileStat = await stat(fullPath);
     if (fileStat.isFile()) return fullPath;
+    if (fileStat.isDirectory()) {
+      const indexPath = join(fullPath, 'index.html');
+      if (existsSync(indexPath)) return indexPath;
+    }
+  }
+
+  const directoryIndexPath = join(distDir, requestedPath, 'index.html');
+  if (existsSync(directoryIndexPath)) {
+    const indexStat = await stat(directoryIndexPath);
+    if (indexStat.isFile()) return directoryIndexPath;
   }
 
   return join(distDir, 'index.html');
