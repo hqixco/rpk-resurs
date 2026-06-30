@@ -8,14 +8,7 @@
       content="РПК Ресурс — производство и монтаж наружной рекламы в Нижнем Новгороде."
     />
     <title>РПК Ресурс</title>
-    <style>
-      html.is-initializing body {
-        opacity: 0;
-      }
-    </style>
     <script>
-      document.documentElement.classList.add('is-initializing');
-
       if ('scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
       }
@@ -38,7 +31,6 @@
           resetInitialScroll();
           requestAnimationFrame(() => {
             resetInitialScroll();
-            document.documentElement.classList.remove('is-initializing');
           });
         });
       };

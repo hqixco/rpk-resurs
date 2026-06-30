@@ -1083,7 +1083,7 @@ if (worksShowcase instanceof HTMLElement && worksLightbox instanceof HTMLElement
     });
   };
 
-  const syncShowcaseRadio = (index) => {
+  const syncShowcaseRadio = (index, { scrollThumb = true } = {}) => {
     const radio = radioButtons[index];
     if (radio instanceof HTMLInputElement) {
       radio.checked = true;
@@ -1092,10 +1092,12 @@ if (worksShowcase instanceof HTMLElement && worksLightbox instanceof HTMLElement
     activeIndex = index;
     updateShowcaseTrack(index);
     updateShowcaseThumbState(index);
-    scrollShowcaseThumbIntoView(index);
+    if (scrollThumb) {
+      scrollShowcaseThumbIntoView(index);
+    }
   };
 
-  syncShowcaseRadio(0);
+  syncShowcaseRadio(0, { scrollThumb: false });
 
   const normalizeWorkCardAssets = () => {
     workCardOpenButtons.forEach((button) => {
