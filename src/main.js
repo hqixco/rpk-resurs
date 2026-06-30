@@ -1,8 +1,304 @@
 import './styles.css';
 
+const siteHeader = document.querySelector('.header');
+if (siteHeader instanceof HTMLElement) {
+  const syncHeaderState = () => {
+    const stickyOffset = window.innerWidth <= 768 ? 220 : 24;
+    siteHeader.classList.toggle('is-sticky', window.scrollY > stickyOffset);
+  };
+
+  if (window.innerWidth > 768) {
+    syncHeaderState();
+  } else {
+    siteHeader.classList.remove('is-sticky');
+  }
+
+  window.addEventListener('scroll', syncHeaderState, { passive: true });
+}
+
+const PHONE_MASK_PREFIX = '+7 ';
+const PHONE_PLACEHOLDER = '+7 (___) ___-__-__';
+
+const normalizePhoneDigits = (value) => {
+  let digits = String(value || '').replace(/\D/g, '');
+
+  // The country code is fixed in the mask, so duplicate leading 7/8 is ignored.
+  if (digits.startsWith('7') || digits.startsWith('8')) {
+    digits = digits.slice(1);
+  }
+
+  return digits.slice(0, 10);
+};
+
+const formatPhoneValue = (value) => {
+  const digits = normalizePhoneDigits(value);
+  const parts = [];
+
+  if (digits.length > 0) {
+    parts.push(`(${digits.slice(0, 3)}`);
+  }
+
+  if (digits.length >= 4) {
+    parts[0] += ')';
+    parts.push(digits.slice(3, 6));
+  }
+
+  if (digits.length >= 7) {
+    parts.push(digits.slice(6, 8));
+  }
+
+  if (digits.length >= 9) {
+    parts.push(digits.slice(8, 10));
+  }
+
+  return [PHONE_MASK_PREFIX.trim(), ...parts].join(' ').trimEnd();
+};
+
+const applyPhoneMask = (input) => {
+  if (!(input instanceof HTMLInputElement)) return;
+
+  const formatted = formatPhoneValue(input.value);
+  input.value = formatted === '+7' ? PHONE_MASK_PREFIX : formatted;
+};
+
+const initPhoneMask = (input) => {
+  if (!(input instanceof HTMLInputElement) || input.dataset.phoneMaskInitialized === 'true') {
+    return;
+  }
+
+  input.dataset.phoneMaskInitialized = 'true';
+  input.placeholder = PHONE_PLACEHOLDER;
+  input.autocomplete = 'tel';
+  input.inputMode = 'tel';
+
+  applyPhoneMask(input);
+
+  input.addEventListener('focus', () => {
+    if (!input.value.trim()) {
+      input.value = PHONE_MASK_PREFIX;
+    }
+  });
+
+  input.addEventListener('input', () => {
+    applyPhoneMask(input);
+  });
+
+  input.addEventListener('paste', (event) => {
+    event.preventDefault();
+    const pastedText = event.clipboardData?.getData('text') || '';
+    input.value = formatPhoneValue(pastedText);
+  });
+
+  input.addEventListener('blur', () => {
+    if (normalizePhoneDigits(input.value).length === 0) {
+      input.value = '';
+    }
+  });
+};
+
+const initPhoneMasks = (root = document) => {
+  if (!(root instanceof Document || root instanceof Element)) return;
+  root.querySelectorAll('input[type="tel"]').forEach((input) => {
+    initPhoneMask(input);
+  });
+};
+
+initPhoneMasks();
+
+const heroMiniForm = document.querySelector('[data-hero-mini-form]');
+if (heroMiniForm instanceof HTMLFormElement) {
+  const stages = {
+    upload: heroMiniForm.querySelector('[data-hero-stage="upload"]'),
+    phone: heroMiniForm.querySelector('[data-hero-stage="phone"]'),
+    success: heroMiniForm.querySelector('[data-hero-stage="success"]'),
+  };
+  const fileInput = heroMiniForm.querySelector('[data-hero-file]');
+  const phoneInput = heroMiniForm.querySelector('[data-hero-phone]');
+  const fileName = heroMiniForm.querySelector('[data-hero-file-name]');
+  const submitButton = heroMiniForm.querySelector('[data-hero-submit]');
+  const buttonLabel = heroMiniForm.querySelector('[data-hero-button-label]');
+  const timerNode = heroMiniForm.querySelector('[data-hero-timer]');
+  const successText = heroMiniForm.querySelector('[data-hero-success-text]');
+  const headerPhone = document.querySelector('.header__contacts .phone')?.textContent?.trim() || '';
+  let currentHeroStage = 'upload';
+  let heroTimerId = null;
+
+  const setHeroStage = (stage) => {
+    currentHeroStage = stage;
+    Object.entries(stages).forEach(([key, node]) => {
+      if (!(node instanceof HTMLElement)) return;
+      node.hidden = key !== stage;
+    });
+
+    if (!(buttonLabel instanceof HTMLElement) || !(submitButton instanceof HTMLButtonElement)) return;
+
+    if (stage === 'upload') {
+      buttonLabel.textContent = 'Рассчитать за 15 минут';
+      submitButton.hidden = false;
+      return;
+    }
+
+    if (stage === 'phone') {
+      buttonLabel.textContent = 'Отправить на расчет';
+      submitButton.hidden = false;
+      phoneInput?.focus();
+      return;
+    }
+
+    submitButton.hidden = true;
+  };
+
+  const updateHeroTimer = (totalSeconds) => {
+    if (!(timerNode instanceof HTMLElement)) return;
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    timerNode.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+
+  const startHeroTimer = () => {
+    let remainingSeconds = 15 * 60;
+    updateHeroTimer(remainingSeconds);
+    if (successText instanceof HTMLElement) {
+      successText.textContent = 'Уже рассчитываем вывеску. В ближайшие минуты с Вами свяжется менеджер';
+    }
+
+    if (heroTimerId) {
+      clearInterval(heroTimerId);
+    }
+
+    heroTimerId = window.setInterval(() => {
+      remainingSeconds = Math.max(0, remainingSeconds - 1);
+      updateHeroTimer(remainingSeconds);
+
+      if (remainingSeconds === 0 && heroTimerId) {
+        clearInterval(heroTimerId);
+        heroTimerId = null;
+        if (successText instanceof HTMLElement) {
+          successText.textContent = `Если менеджер еще не связался с Вами, пожалуйста позвоните нам по номеру: ${headerPhone}`;
+        }
+      }
+    }, 1000);
+  };
+
+  fileInput?.addEventListener('change', () => {
+    const selectedFile = fileInput.files?.[0];
+    if (!(fileName instanceof HTMLElement)) return;
+    fileName.textContent = selectedFile?.name || 'PNG, JPG или WEBP';
+  });
+
+  submitButton?.addEventListener('click', () => {
+    if (currentHeroStage === 'upload') {
+      if (!fileInput?.files?.length) {
+        fileInput?.focus();
+        return;
+      }
+
+      setHeroStage('phone');
+      return;
+    }
+
+    if (currentHeroStage === 'phone') {
+      if (!phoneInput?.value.trim()) {
+        phoneInput?.focus();
+        return;
+      }
+
+      setHeroStage('success');
+      startHeroTimer();
+    }
+  });
+}
+
+const processCtaForm = document.querySelector('[data-process-cta-form]');
+if (processCtaForm instanceof HTMLFormElement) {
+  const fileInput = processCtaForm.querySelector('[data-process-cta-file]');
+  const phoneInput = processCtaForm.querySelector('[data-process-cta-phone]');
+  const fileName = processCtaForm.querySelector('[data-process-cta-file-name]');
+  const successPanel = processCtaForm.querySelector('[data-process-cta-success]');
+  const successText = processCtaForm.querySelector('[data-process-cta-text]');
+  const timerNode = processCtaForm.querySelector('[data-process-cta-timer]');
+  const submitButton = processCtaForm.querySelector('[data-process-cta-submit]');
+  const formFields = Array.from(processCtaForm.querySelectorAll('[data-process-cta-field]'));
+  const headerPhone = document.querySelector('.header__contacts .phone')?.textContent?.trim() || '';
+  let processCtaTimerId = null;
+
+  const updateProcessCtaTimer = (totalSeconds) => {
+    if (!(timerNode instanceof HTMLElement)) return;
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    timerNode.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+
+  const startProcessCtaTimer = () => {
+    let remainingSeconds = 15 * 60;
+    updateProcessCtaTimer(remainingSeconds);
+
+    if (successText instanceof HTMLElement) {
+      successText.textContent = 'Уже рассчитываем вывеску. В ближайшие минуты с Вами свяжется менеджер';
+    }
+
+    if (processCtaTimerId) {
+      clearInterval(processCtaTimerId);
+    }
+
+    processCtaTimerId = window.setInterval(() => {
+      remainingSeconds = Math.max(0, remainingSeconds - 1);
+      updateProcessCtaTimer(remainingSeconds);
+
+      if (remainingSeconds === 0 && processCtaTimerId) {
+        clearInterval(processCtaTimerId);
+        processCtaTimerId = null;
+
+        if (successText instanceof HTMLElement) {
+          successText.textContent = `Если менеджер еще не связался с Вами, пожалуйста позвоните нам по номеру: ${headerPhone}`;
+        }
+      }
+    }, 1000);
+  };
+
+  fileInput?.addEventListener('change', () => {
+    const selectedFile = fileInput.files?.[0];
+    if (!(fileName instanceof HTMLElement)) return;
+    fileName.textContent = selectedFile?.name || 'PNG, JPG или WEBP';
+  });
+
+  processCtaForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    if (!(fileInput instanceof HTMLInputElement) || !fileInput.files?.length) {
+      fileInput?.focus();
+      return;
+    }
+
+    if (!(phoneInput instanceof HTMLInputElement) || !phoneInput.value.trim()) {
+      phoneInput?.focus();
+      return;
+    }
+
+    formFields.forEach((field) => {
+      if (field instanceof HTMLElement) {
+        field.hidden = true;
+      }
+    });
+
+    if (submitButton instanceof HTMLButtonElement) {
+      submitButton.hidden = true;
+    }
+
+    if (successPanel instanceof HTMLElement) {
+      successPanel.hidden = false;
+    }
+
+    processCtaForm.classList.add('is-success');
+    startProcessCtaTimer();
+  });
+}
+
 const quizStage = document.querySelector('[data-quiz-stage]');
 const quizStepLabel = document.querySelector('[data-quiz-step-label]');
 const quizProgress = document.querySelector('.quiz-panel__progress');
+const quizSection = document.querySelector('.quiz-panel');
+const quizCard = document.querySelector('.quiz-panel__card');
 const assetModules = import.meta.glob('../assets/**/*.{png,jpg,jpeg,svg}', {
   eager: true,
   import: 'default',
@@ -23,6 +319,8 @@ const resolveAssetPath = (path) => {
 
 if (quizStage && quizStepLabel && quizProgress) {
   const assetUrl = (fileName) => new URL(`../assets/${fileName}`, import.meta.url).href;
+  const uploadOptionLabel = 'Загрузите фото фасада или места установки';
+  const headerPhone = document.querySelector('.header__contacts .phone')?.textContent?.trim() || '';
 
   const serviceIcons = {
     light: assetUrl('quiz-format-light-sign.jpg'),
@@ -36,7 +334,7 @@ if (quizStage && quizStepLabel && quizProgress) {
     entrance: assetUrl('quiz-format-entrance-group.jpg'),
     facade: assetUrl('quiz-format-facade-design.jpg'),
     interior: assetUrl('quiz-format-interior-sign.jpg'),
-    navigation: assetUrl('service-navigation-icon.png'),
+    navigation: assetUrl('quiz-format-navigation-sign.png'),
   };
 
   const steps = [
@@ -45,23 +343,12 @@ if (quizStage && quizStepLabel && quizProgress) {
       title: 'Какой тип вывески вам нужен?',
       options: [
         { label: 'Световая вывеска', icon: serviceIcons.light },
-        { label: 'Объемные буквы', icon: serviceIcons.letters },
-        { label: 'Входная группа', icon: serviceIcons.entrance },
-        { label: 'Оформление фасада', icon: serviceIcons.facade },
+        { label: 'Объёмные буквы', icon: serviceIcons.letters },
+        { label: 'Световой короб', icon: serviceIcons.light },
+        { label: 'Оформление фасада или входной группы', icon: serviceIcons.facade },
         { label: 'Интерьерная вывеска', icon: serviceIcons.interior },
-        { label: 'Пока не знаю', icon: serviceIcons.navigation },
-      ],
-    },
-    {
-      key: 'business',
-      title: 'Для какого бизнеса нужна вывеска?',
-      options: [
-        { label: 'Магазин / торговая точка', icon: serviceIcons.store },
-        { label: 'Кафе / ресторан', icon: serviceIcons.cafe },
-        { label: 'Салон красоты / студия', icon: serviceIcons.salon },
-        { label: 'Офис / компания', icon: serviceIcons.office },
-        { label: 'Медицинский центр / клиника', icon: serviceIcons.clinic },
-        { label: 'Другое', icon: serviceIcons.other },
+        { label: 'Навигация, таблички, указатели', icon: serviceIcons.navigation },
+        'Пока не знаю — нужна консультация',
       ],
     },
     {
@@ -70,67 +357,11 @@ if (quizStage && quizStepLabel && quizProgress) {
       options: [
         'На фасаде здания',
         'Над входом',
+        'В торговом центре',
         'Внутри помещения',
-        'На ТЦ / бизнес-центре',
         'На отдельно стоящей конструкции',
-        'Пока не определились',
-      ],
-    },
-    {
-      key: 'design',
-      title: 'Есть ли у вас готовый дизайн или логотип?',
-      options: [
-        'Да, есть макет',
-        'Есть логотип, но нужен дизайн вывески',
-        'Нужно разработать с нуля',
-        'Нужно адаптировать старую вывеску',
-        'Пока не знаю',
-      ],
-    },
-    {
-      key: 'size',
-      title: 'Какой размер вывески планируете?',
-      options: [
-        'До 1 метра',
-        '1–2 метра',
-        '2–4 метра',
-        'Больше 4 метров',
-        'Нужно замерить на месте',
-        'Пока не знаю',
-      ],
-    },
-    {
-      key: 'install',
-      title: 'Нужен ли монтаж?',
-      options: [
-        'Да, нужен под ключ',
-        'Только изготовление',
-        'Нужен демонтаж старой вывески',
-        'Нужен замер и консультация',
-        'Пока не знаю',
-      ],
-    },
-    {
-      key: 'deadline',
-      title: 'В какие сроки нужна вывеска?',
-      options: [
-        'Срочно, как можно быстрее',
-        'В течение недели',
-        'В течение 2–3 недель',
-        'В течение месяца',
-        'Сроки пока не важны',
-      ],
-    },
-    {
-      key: 'budget',
-      title: 'Какой бюджет рассматриваете?',
-      options: [
-        'До 30 000 ?',
-        '30 000–60 000 ?',
-        '60 000–100 000 ?',
-        '100 000–200 000 ?',
-        'Более 200 000 ?',
-        'Хочу сначала понять стоимость',
+        'Ещё не определились',
+        { label: 'Загрузите фото фасада или места установки', icon: '/assets/add-image.svg' },
       ],
     },
     {
@@ -143,6 +374,120 @@ if (quizStage && quizStepLabel && quizProgress) {
   const state = {};
   let currentStep = 0;
   let advanceTimer = null;
+  let quizSuccessTimerId = null;
+
+  quizProgress.innerHTML = steps.map((_, index) => `<span${index === 0 ? ' class="is-active"' : ''}></span>`).join('');
+
+  const buildQuizFormData = (form) => {
+    const formData = new FormData();
+    const fields = new FormData(form);
+
+    fields.forEach((value, key) => {
+      formData.append(key, value);
+    });
+
+    steps.forEach((step) => {
+      if (step.contact || typeof state[step.key] === 'undefined') {
+        return;
+      }
+
+      formData.append(`quiz_${step.key}`, state[step.key]);
+    });
+
+    if (state.placePhoto instanceof File) {
+      formData.append('place_photo', state.placePhoto, state.placePhoto.name);
+    }
+
+    formData.append(
+      'quiz_answers',
+      JSON.stringify(
+        steps
+          .filter((step) => !step.contact && typeof state[step.key] !== 'undefined')
+          .map((step) => ({
+            question: step.title,
+            answer: state[step.key],
+          })),
+      ),
+    );
+
+    return formData;
+  };
+
+  const submitQuizRequest = async (form) => {
+    const endpoint = form.getAttribute('action')?.trim();
+    const formData = buildQuizFormData(form);
+
+    if (!endpoint) {
+      return;
+    }
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Quiz submit failed: ${response.status}`);
+    }
+  };
+
+  const updateQuizTimer = (totalSeconds) => {
+    const timerNode = quizStage.querySelector('[data-quiz-success-timer]');
+    if (!(timerNode instanceof HTMLElement)) return;
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    timerNode.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  };
+
+  const startQuizSuccessTimer = () => {
+    let remainingSeconds = 15 * 60;
+    const successText = quizStage.querySelector('[data-quiz-success-text]');
+
+    updateQuizTimer(remainingSeconds);
+
+    if (successText instanceof HTMLElement) {
+      successText.textContent = 'Уже рассчитываем вывеску. В ближайшие минуты с Вами свяжется менеджер';
+    }
+
+    if (quizSuccessTimerId) {
+      clearInterval(quizSuccessTimerId);
+    }
+
+    quizSuccessTimerId = window.setInterval(() => {
+      remainingSeconds = Math.max(0, remainingSeconds - 1);
+      updateQuizTimer(remainingSeconds);
+
+      if (remainingSeconds === 0 && quizSuccessTimerId) {
+        clearInterval(quizSuccessTimerId);
+        quizSuccessTimerId = null;
+
+        if (successText instanceof HTMLElement) {
+          successText.textContent = `Если менеджер еще не связался с Вами, пожалуйста позвоните нам по номеру: ${headerPhone}`;
+        }
+      }
+    }, 1000);
+  };
+
+  const renderQuizSuccess = () => {
+    const cardTop = quizCard.querySelector('.quiz-panel__card-top');
+    if (cardTop instanceof HTMLElement) {
+      cardTop.hidden = true;
+    }
+
+    quizStage.innerHTML = `
+      <div class="quiz-panel__success">
+        <div class="hero-mini-form__success">
+          <span class="hero-mini-form__check" aria-hidden="true"></span>
+          <div class="hero-mini-form__success-copy">
+            <span class="hero-mini-form__timer" data-quiz-success-timer>15:00</span>
+            <strong data-quiz-success-text>Уже рассчитываем вывеску. В ближайшие минуты с Вами свяжется менеджер</strong>
+          </div>
+        </div>
+      </div>
+    `;
+
+    startQuizSuccessTimer();
+  };
 
   const renderProgress = () => {
     quizStepLabel.textContent = `Шаг ${currentStep + 1} / ${steps.length}`;
@@ -154,7 +499,13 @@ if (quizStage && quizStepLabel && quizProgress) {
 
   const renderStep = () => {
     const step = steps[currentStep];
-    const useImageLayout = step.key === 'format' || step.key === 'business';
+    const useImageLayout = step.key === 'format';
+    const cardTop = quizCard.querySelector('.quiz-panel__card-top');
+
+    if (cardTop instanceof HTMLElement) {
+      cardTop.hidden = false;
+    }
+
     renderProgress();
 
     if (step.contact) {
@@ -187,6 +538,7 @@ if (quizStage && quizStepLabel && quizProgress) {
               <input type="checkbox" name="consent" checked />
               <span>Нажимая кнопку, вы соглашаетесь с <a href="#contacts">политикой конфиденциальности</a></span>
             </label>
+            ${state.placePhoto instanceof File ? `<p class="quiz-panel__file-note">Фото приложено: ${state.placePhoto.name}</p>` : ''}
           </div>
           <div class="quiz-panel__actions">
             <button class="button button--secondary quiz-panel__back" type="button" data-quiz-back>Назад</button>
@@ -203,10 +555,39 @@ if (quizStage && quizStepLabel && quizProgress) {
         renderStep();
       });
 
-      form?.addEventListener('submit', (event) => {
+      form?.addEventListener('submit', async (event) => {
         event.preventDefault();
-        window.location.hash = '#contacts';
+        const submitButton = form.querySelector('.quiz-panel__next');
+        const phoneField = form.querySelector('input[name="phone"]');
+        const consentField = form.querySelector('input[name="consent"]');
+
+        if (phoneField instanceof HTMLInputElement && !phoneField.value.trim()) {
+          phoneField.focus();
+          return;
+        }
+
+        if (consentField instanceof HTMLInputElement && !consentField.checked) {
+          consentField.focus();
+          return;
+        }
+
+        if (submitButton instanceof HTMLButtonElement) {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Отправляем...';
+        }
+
+        try {
+          await submitQuizRequest(form);
+          renderQuizSuccess();
+        } catch (error) {
+          if (submitButton instanceof HTMLButtonElement) {
+            submitButton.disabled = false;
+            submitButton.textContent = 'Отправить заявку';
+          }
+        }
       });
+
+      initPhoneMasks(form);
 
       return;
     }
@@ -216,22 +597,26 @@ if (quizStage && quizStepLabel && quizProgress) {
         const entry = typeof option === 'string' ? { label: option, icon: null } : option;
         const value = entry.label;
         const icon = entry.icon;
-        const isUnknown = step.key === 'format' && value === 'Пока не знаю';
-        const isImageOption = useImageLayout && !isUnknown;
+        const isUploadOption = step.key === 'place' && value === uploadOptionLabel;
+        const isUnknown =
+          step.key === 'format' && (value === 'Пока не знаю' || value === 'Пока не знаю — нужна консультация');
+        const isImageOption = Boolean(icon) && !isUnknown;
         const checked = state[step.key] === value || (index === 0 && state[step.key] == null) ? 'checked' : '';
-        const optionClass = useImageLayout
-          ? `quiz-panel__option ${isUnknown ? 'quiz-panel__option--text-only' : 'quiz-panel__option--image'}`
+        const optionClass = isImageOption
+          ? 'quiz-panel__option quiz-panel__option--image'
           : 'quiz-panel__option quiz-panel__option--text-only';
+        const optionText = isUploadOption && state.placePhoto instanceof File ? state.placePhoto.name : value;
 
         return `
           <input id="quiz-${step.key}-${index}" class="quiz-panel__radio" type="radio" name="${step.key}" value="${value}" ${checked} />
-          <label class="${optionClass}" for="quiz-${step.key}-${index}">
+          <label class="${optionClass}${isUploadOption ? ' quiz-panel__option--upload' : ''}" for="quiz-${step.key}-${index}" ${isUploadOption ? 'data-quiz-upload-trigger' : ''}>
             ${
               isImageOption
                 ? `<span class="quiz-panel__option-icon" aria-hidden="true">${icon ? `<img src="${icon}" alt="" />` : ''}</span>`
                 : ''
             }
-            <span class="quiz-panel__option-text">${value.replace(' / ', ' /<br />')}</span>
+            <span class="quiz-panel__option-text">${optionText.replace(' / ', ' /<br />')}</span>
+            ${isUploadOption ? '<span class="quiz-panel__option-hint">JPG, PNG, WEBP</span>' : ''}
           </label>
         `;
       })
@@ -242,6 +627,7 @@ if (quizStage && quizStepLabel && quizProgress) {
       <div class="quiz-panel__options ${useImageLayout ? 'quiz-panel__options--image' : ''}" role="list" aria-label="Варианты ответа">
         ${options}
       </div>
+      ${step.key === 'place' ? '<input class="quiz-panel__file-input" type="file" accept="image/*" data-quiz-file-input hidden />' : ''}
       <div class="quiz-panel__actions">
         <button class="button button--secondary quiz-panel__back" type="button" data-quiz-back ${currentStep === 0 ? 'disabled' : ''}>Назад</button>
         <button class="button button--primary quiz-panel__next" type="button" data-quiz-next>Далее</button>
@@ -250,6 +636,8 @@ if (quizStage && quizStepLabel && quizProgress) {
 
     const backButton = quizStage.querySelector('[data-quiz-back]');
     const nextButton = quizStage.querySelector('[data-quiz-next]');
+    const uploadTrigger = quizStage.querySelector('[data-quiz-upload-trigger]');
+    const uploadInput = quizStage.querySelector('[data-quiz-file-input]');
 
     backButton?.addEventListener('click', () => {
       if (currentStep > 0) {
@@ -262,16 +650,75 @@ if (quizStage && quizStepLabel && quizProgress) {
       const selected = quizStage.querySelector(`input[name="${step.key}"]:checked`);
       if (!selected) return;
 
+      if (step.key === 'place' && selected.value === uploadOptionLabel && !(state.placePhoto instanceof File)) {
+        const uploadInput = quizStage.querySelector('[data-quiz-file-input]');
+        if (uploadInput instanceof HTMLInputElement) {
+          uploadInput.click();
+        }
+        return;
+      }
+
       state[step.key] = selected.value;
       currentStep = Math.min(steps.length - 1, currentStep + 1);
       renderStep();
     });
+
+    uploadTrigger?.addEventListener('click', (event) => {
+      if (!(uploadInput instanceof HTMLInputElement)) {
+        return;
+      }
+
+      event.preventDefault();
+
+      const relatedRadioId = uploadTrigger.getAttribute('for');
+      const relatedRadio = relatedRadioId ? quizStage.querySelector(`#${relatedRadioId}`) : null;
+
+      if (relatedRadio instanceof HTMLInputElement) {
+        relatedRadio.checked = true;
+      }
+
+      uploadInput.click();
+    });
+
+    uploadInput?.addEventListener('change', () => {
+      if (!(uploadInput instanceof HTMLInputElement)) {
+        return;
+      }
+
+      const [file] = uploadInput.files || [];
+
+      if (!file) {
+        if (!(state.placePhoto instanceof File)) {
+          delete state.place;
+          renderStep();
+        }
+
+        return;
+      }
+
+      state.place = uploadOptionLabel;
+      state.placePhoto = file;
+      currentStep = Math.min(steps.length - 1, currentStep + 1);
+      renderStep();
+    });
+
   };
 
   quizStage.addEventListener('change', (event) => {
     const target = event.target;
     if (target instanceof HTMLInputElement && target.type === 'radio') {
       const step = steps[currentStep];
+      const isUploadOption = step.key === 'place' && target.value === uploadOptionLabel;
+
+      if (isUploadOption) {
+        if (advanceTimer) {
+          clearTimeout(advanceTimer);
+          advanceTimer = null;
+        }
+
+        return;
+      }
+
       state[step.key] = target.value;
 
       if (!step.contact && currentStep < steps.length - 1) {
@@ -289,6 +736,139 @@ if (quizStage && quizStepLabel && quizProgress) {
   });
 
   renderStep();
+}
+
+const servicePopup = document.querySelector('[data-service-popup]');
+
+if (servicePopup instanceof HTMLElement) {
+  const body = document.body;
+  const popupTitle = servicePopup.querySelector('[data-service-popup-title-target]');
+  const popupImage = servicePopup.querySelector('[data-service-popup-image]');
+  const popupForm = servicePopup.querySelector('[data-service-popup-form]');
+  const popupPhone = popupForm?.querySelector('input[name="phone"]');
+  const openButtons = Array.from(document.querySelectorAll('[data-service-popup-open]'));
+  const closeButtons = Array.from(servicePopup.querySelectorAll('[data-service-popup-close]'));
+  let lastFocusedElement = null;
+
+  const resolvePopupImageFromButton = (button) => {
+    const serviceCard = button.closest('.service-card');
+    const serviceCardImage = serviceCard?.querySelector('.service-card__image');
+
+    if (serviceCardImage instanceof HTMLImageElement) {
+      return {
+        src: serviceCardImage.currentSrc || serviceCardImage.src,
+        alt: serviceCardImage.alt,
+      };
+    }
+
+    const workCard = button.closest('.work-card');
+
+    if (!(workCard instanceof HTMLElement)) {
+      return { src: '', alt: '' };
+    }
+
+    const slider = workCard.querySelector('[data-work-card-slider-images]');
+    if (slider instanceof HTMLElement) {
+      try {
+        const rawItems = slider.getAttribute('data-work-card-slider-images');
+        const items = rawItems ? JSON.parse(rawItems) : [];
+        const currentIndex = Number(slider.getAttribute('data-work-card-slider-index') || 0);
+        const currentItem = items[currentIndex] || items[0];
+
+        if (currentItem?.image) {
+          return {
+            src: currentItem.image,
+            alt: currentItem.title || '',
+          };
+        }
+      } catch {
+        return { src: '', alt: '' };
+      }
+    }
+
+    const workCardOpen = workCard.querySelector('[data-work-card-image]');
+    if (workCardOpen instanceof HTMLElement) {
+      return {
+        src: workCardOpen.getAttribute('data-work-card-image') || '',
+        alt: workCard.querySelector('.work-card__caption h3')?.textContent?.trim() || '',
+      };
+    }
+
+    return { src: '', alt: '' };
+  };
+
+  const closeServicePopup = () => {
+    servicePopup.classList.remove('is-open');
+    body.classList.remove('is-modal-open');
+
+    window.setTimeout(() => {
+      servicePopup.hidden = true;
+    }, 220);
+
+    if (lastFocusedElement instanceof HTMLElement) {
+      lastFocusedElement.focus();
+      lastFocusedElement = null;
+    }
+  };
+
+  const openServicePopup = (title, imageSrc = '', imageAlt = '') => {
+    lastFocusedElement = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+    if (popupTitle instanceof HTMLElement) {
+      popupTitle.textContent = title;
+    }
+
+    if (popupImage instanceof HTMLImageElement) {
+      if (imageSrc) {
+        popupImage.src = imageSrc;
+        popupImage.alt = imageAlt;
+        popupImage.hidden = false;
+      } else {
+        popupImage.hidden = true;
+        popupImage.removeAttribute('src');
+        popupImage.alt = '';
+      }
+    }
+
+    if (popupForm instanceof HTMLFormElement) {
+      popupForm.reset();
+    }
+
+    servicePopup.hidden = false;
+    requestAnimationFrame(() => {
+      servicePopup.classList.add('is-open');
+      body.classList.add('is-modal-open');
+      if (popupPhone instanceof HTMLInputElement) {
+        popupPhone.focus();
+      }
+    });
+  };
+
+  openButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const title = button.getAttribute('data-service-popup-title') || 'Узнать стоимость вывески';
+      const { src, alt } = resolvePopupImageFromButton(button);
+      openServicePopup(title, src, alt);
+    });
+  });
+
+  closeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      closeServicePopup();
+    });
+  });
+
+  popupForm?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    closeServicePopup();
+    window.location.hash = '#contacts';
+  });
+
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && servicePopup.classList.contains('is-open')) {
+      closeServicePopup();
+    }
+  });
 }
 
 const worksShowcase = document.querySelector('.works-showcase');
@@ -665,7 +1245,13 @@ if (worksShowcase instanceof HTMLElement && worksLightbox instanceof HTMLElement
     });
   });
 
-  const hiddenWorkCards = Array.from(document.querySelectorAll('.works-grid .work-card[hidden]'));
+  const workGridCards = Array.from(document.querySelectorAll('.works-grid .work-card'));
+  const hiddenWorkCards = workGridCards.slice(8);
+
+  hiddenWorkCards.forEach((card) => {
+    card.hidden = true;
+  });
+
   if (worksPanelMoreButton instanceof HTMLButtonElement) {
     if (!hiddenWorkCards.length) {
       worksPanelMoreButton.hidden = true;
@@ -857,5 +1443,346 @@ if (worksShowcase instanceof HTMLElement && worksLightbox instanceof HTMLElement
   };
 
   dragScrollTargets.forEach((element) => enableDragScroll(element));
+}
+
+const reviewsTrack = document.querySelector('[data-reviews-track]');
+const reviewsDots = document.querySelector('[data-reviews-dots]');
+const reviewsPrev = document.querySelector('[data-reviews-prev]');
+const reviewsNext = document.querySelector('[data-reviews-next]');
+const reviewsPlatformButtons = Array.from(document.querySelectorAll('[data-reviews-platform]'));
+
+if (
+  reviewsTrack instanceof HTMLElement &&
+  reviewsDots instanceof HTMLElement &&
+  reviewsPrev instanceof HTMLButtonElement &&
+  reviewsNext instanceof HTMLButtonElement &&
+  reviewsPlatformButtons.length
+) {
+  const reviewSets = {
+    avito: [
+      {
+        author: 'Ирина и Павел',
+        subtitle: 'Кафе, световая вывеска',
+        initial: 'И',
+        initialBg: '#6f8498',
+        text: 'Все договорённости по срокам и монтажу выполнили. Макет согласовали быстро, на объекте монтажники работали аккуратно и после установки убрали за собой. Вывеска получилась заметной и вечером выглядит особенно хорошо.',
+      },
+      {
+        author: 'Егор',
+        subtitle: 'Магазин, объёмные буквы',
+        initial: 'Е',
+        initialBg: '#e0ad53',
+        rating: 4.5,
+        text: 'Нужно было сделать вывеску заметной, но не выходить за установленный бюджет. Предложили несколько вариантов, показали визуализацию на фасаде и помогли выбрать оптимальный. Результат полностью устроил.',
+      },
+      {
+        author: 'Марина',
+        subtitle: 'Салон красоты, оформление фасада',
+        initial: 'М',
+        initialBg: '#8a83f1',
+        text: 'Понравилась коммуникация. На каждом этапе было понятно, что уже сделано, что находится в работе и когда планируется монтаж. Не приходилось постоянно звонить и уточнять статус заказа.',
+      },
+      {
+        author: 'Сергей',
+        subtitle: 'Автосервис, световой короб',
+        initial: 'С',
+        initialBg: '#7d9c89',
+        text: 'Монтаж был непростой из-за расположения фасада, но команда всё заранее осмотрела и подготовила. Приехали без опозданий, установили конструкцию аккуратно и без задержек.',
+      },
+      {
+        author: 'Алексей',
+        subtitle: 'Магазин строительных материалов',
+        initial: 'А',
+        initialBg: '#c98a68',
+        text: 'Обратились за изготовлением вывески и оформлением входной группы. Нам предложили единый вариант дизайна, чтобы всё выглядело аккуратно и не было ощущения, что элементы сделаны в разное время. Получилось хорошо.',
+      },
+      {
+        author: 'Ольга',
+        subtitle: 'Цветочный магазин, объёмные буквы',
+        initial: 'О',
+        initialBg: '#5f92d8',
+        text: 'Хотелось, чтобы вывеска выглядела нежно, но при этом была заметной с дороги. Дизайнер понял задачу, предложил подходящий цвет и подсветку. После монтажа фасад стал выглядеть намного привлекательнее.',
+      },
+      {
+        author: 'Дмитрий',
+        subtitle: 'Магазин автозапчастей',
+        initial: 'Д',
+        initialBg: '#9b76ff',
+        text: 'Заказывали замену старой вывески. Специалисты сами приехали на замер, оценили состояние фасада и предложили более надёжный вариант крепления. Всё сделали в согласованные сроки.',
+      },
+      {
+        author: 'Наталья',
+        subtitle: 'Медицинский центр, интерьерная вывеска',
+        initial: 'Н',
+        initialBg: '#66a38a',
+        text: 'Нам было важно, чтобы оформление выглядело спокойно и профессионально. Сделали аккуратную вывеску в фирменных цветах, без лишней яркости. К качеству изготовления и монтажа вопросов нет.',
+      },
+      {
+        author: 'Андрей',
+        subtitle: 'Ресторан, входная группа',
+        initial: 'А',
+        initialBg: '#d08a5c',
+        text: 'Понравилось, что нам не пытались продать самый дорогой вариант. Объяснили разницу между материалами и подсветкой, после чего подобрали решение под наш бюджет. Итог выглядит достойно.',
+      },
+      {
+        author: 'Екатерина',
+        subtitle: 'Шоурум одежды',
+        initial: 'Е',
+        initialBg: '#7b88b8',
+        rating: 4.5,
+        text: 'Макет сделали быстро и сразу показали, как вывеска будет смотреться на фотографии фасада. После небольшой корректировки запустили производство. В реальности получилось практически так же, как на визуализации.',
+      },
+      {
+        author: 'Михаил',
+        subtitle: 'Сеть продуктовых магазинов',
+        initial: 'М',
+        initialBg: '#b8874f',
+        text: 'Работали сразу по нескольким объектам. Важно было сохранить одинаковый внешний вид вывесок и уложиться в график открытий. Все конструкции изготовили и установили последовательно, без срывов.',
+      },
+      {
+        author: 'Виктория',
+        subtitle: 'Студия маникюра',
+        initial: 'В',
+        initialBg: '#8a83f1',
+        text: 'Это была наша первая вывеска, поэтому мы практически не понимали, какие материалы и размеры нужны. Нам всё объяснили простыми словами, помогли с дизайном и подготовили готовое решение под ключ.',
+      },
+      {
+        author: 'Артём',
+        subtitle: 'Фитнес-студия',
+        initial: 'А',
+        initialBg: '#5d9b8f',
+        text: 'Вывеска хорошо читается и днём, и вечером. Подсветка равномерная, отдельные буквы не отличаются по яркости. После установки всё проверили и показали, как правильно включать оборудование.',
+      },
+      {
+        author: 'Роман',
+        subtitle: 'Производственная компания',
+        initial: 'Р',
+        initialBg: '#c98a68',
+        text: 'Заказывали фасадную вывеску для нового офиса. Понравилось, что заранее получили понятный расчёт без неожиданных доплат после монтажа. Стоимость осталась такой, как согласовали.',
+      },
+      {
+        author: 'Светлана',
+        subtitle: 'Пекарня',
+        initial: 'С',
+        initialBg: '#6f8498',
+        rating: 4.5,
+        text: 'Сначала думали установить обычный световой короб, но после замера нам предложили другой вариант. Он оказался немного дороже, зато лучше подошёл к фасаду. Сейчас понимаем, что решение было правильным.',
+      },
+    ],
+    yandex: [
+      {
+        author: 'Николай',
+        subtitle: 'Сервисный центр',
+        initial: 'Н',
+        initialBg: '#6f8498',
+        text: 'Работу выполнили аккуратно. При монтаже не повредили облицовку фасада, проводку спрятали, никаких лишних кабелей не осталось. Вывеска выглядит как часть здания, а не отдельная конструкция.',
+      },
+      {
+        author: 'Анастасия',
+        subtitle: 'Салон мебели',
+        initial: 'А',
+        initialBg: '#e0ad53',
+        text: 'Заказывали объёмные буквы и оформление витрин. Дизайн получился современным и при этом хорошо сочетается с нашим интерьером. Клиенты стали чаще замечать салон с дороги.',
+      },
+      {
+        author: 'Павел',
+        subtitle: 'Кофейня',
+        initial: 'П',
+        initialBg: '#8a83f1',
+        text: 'Работали в сжатые сроки перед открытием. Сразу предупредили, что реально успеть, а какие идеи лучше оставить на второй этап. Основную вывеску изготовили и установили вовремя.',
+      },
+      {
+        author: 'Юлия',
+        subtitle: 'Детский центр',
+        initial: 'Ю',
+        initialBg: '#7d9c89',
+        text: 'Для нас было важно, чтобы оформление получилось ярким, но не выглядело слишком пёстро. Предложенный дизайн понравился и нам, и родителям. Отдельное спасибо за аккуратный монтаж.',
+      },
+      {
+        author: 'Константин',
+        subtitle: 'Юридическая компания',
+        initial: 'К',
+        initialBg: '#c98a68',
+        rating: 4.5,
+        text: 'Нужна была сдержанная интерьерная вывеска для зоны ресепшена. Сделали несколько вариантов визуализации и помогли подобрать материал. Итог выглядит дорого и соответствует стилю офиса.',
+      },
+      {
+        author: 'Лариса',
+        subtitle: 'Магазин косметики',
+        initial: 'Л',
+        initialBg: '#5f92d8',
+        text: 'Очень удобно, что всё сделали в одном месте: замер, макет, производство и установку. Не пришлось отдельно искать дизайнера и монтажников. По срокам тоже всё прошло нормально.',
+      },
+      {
+        author: 'Илья',
+        subtitle: 'Барбершоп',
+        initial: 'И',
+        initialBg: '#9b76ff',
+        text: 'Хотели нестандартную вывеску с контражурной подсветкой. Команда помогла доработать нашу идею и подобрать конструкцию, которая подходила фасаду. Вечером смотрится отлично.',
+      },
+      {
+        author: 'Татьяна',
+        subtitle: 'Аптека',
+        initial: 'Т',
+        initialBg: '#66a38a',
+        text: 'Нам требовалось заменить старую конструкцию и сохранить привычные фирменные цвета. Новый вариант получился заметнее и аккуратнее предыдущего. Работа выполнена без остановки магазина.',
+      },
+      {
+        author: 'Вадим',
+        subtitle: 'Автомойка',
+        initial: 'В',
+        initialBg: '#d08a5c',
+        text: 'Вывеска находится на открытом месте, поэтому переживали за крепление и устойчивость к погоде. На замере всё проверили, предложили усиленную конструкцию. После установки никаких проблем не возникло.',
+      },
+      {
+        author: 'Елена',
+        subtitle: 'Туристическое агентство',
+        initial: 'Е',
+        initialBg: '#7b88b8',
+        text: 'Оперативно отвечали на сообщения и не затягивали согласование. Все правки в макет внесли без споров и дополнительных сложностей. В результате получили именно тот вариант, который хотели.',
+      },
+      {
+        author: 'Денис',
+        subtitle: 'Магазин электроники',
+        initial: 'Д',
+        initialBg: '#b8874f',
+        text: 'Сравнивали предложения нескольких компаний. Здесь понравился подробный расчёт и то, что сразу объяснили, из чего складывается стоимость. По факту качество соответствует цене.',
+      },
+      {
+        author: 'Кристина',
+        subtitle: 'Кондитерская',
+        initial: 'К',
+        initialBg: '#8a83f1',
+        text: 'Вывеска получилась очень аккуратной, особенно понравилась тёплая подсветка. Она не бьёт в глаза, но название хорошо видно с противоположной стороны улицы.',
+      },
+      {
+        author: 'Максим',
+        subtitle: 'Офис продаж застройщика',
+        initial: 'М',
+        initialBg: '#5d9b8f',
+        text: 'Работали по брендбуку, поэтому было важно точно попасть в цвета и пропорции логотипа. Перед производством согласовали образцы и визуализацию. Готовая конструкция соответствует требованиям.',
+      },
+      {
+        author: 'Анна',
+        subtitle: 'Магазин товаров для дома',
+        initial: 'А',
+        initialBg: '#c98a68',
+        rating: 4.5,
+        text: 'После первой консультации стало понятно, какой вариант нам нужен и сколько он будет стоить. Никаких сложных терминов и давления. Спокойно согласовали проект и получили готовую вывеску.',
+      },
+      {
+        author: 'Владимир',
+        subtitle: 'Ресторан быстрого питания',
+        initial: 'В',
+        initialBg: '#6f8498',
+        text: 'Заказывали комплексное оформление: вывеску, таблички и навигацию. Все элементы выполнены в одном стиле, посетителям стало проще находить вход и зону выдачи. Работой довольны.',
+      },
+    ],
+  };
+
+  const renderReviewStars = (rating = 5) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const stars = [];
+
+    for (let index = 0; index < 5; index += 1) {
+      let modifier = 'review-card__star--empty';
+
+      if (index < fullStars) {
+        modifier = 'review-card__star--full';
+      } else if (index === fullStars && hasHalfStar) {
+        modifier = 'review-card__star--half';
+      }
+
+      stars.push(`<span class="review-card__star ${modifier}">★</span>`);
+    }
+
+    return stars.join('');
+  };
+
+  let activePlatform = 'avito';
+  let currentPage = 0;
+
+  const getVisibleCount = () => {
+    if (window.innerWidth >= 1280) return 4;
+    if (window.innerWidth >= 768) return 2;
+    return 1;
+  };
+
+  const getActiveReviews = () => reviewSets[activePlatform] || [];
+
+  const renderReviews = () => {
+    const reviews = getActiveReviews();
+    const visibleCount = getVisibleCount();
+    const totalPages = Math.max(1, reviews.length - visibleCount + 1);
+    currentPage = Math.max(0, Math.min(currentPage, totalPages - 1));
+    const visibleReviews = reviews.slice(currentPage, currentPage + visibleCount);
+
+    reviewsTrack.innerHTML = visibleReviews
+      .map(
+        (review) => `
+          <article class="review-card">
+            <div class="review-card__top">
+              <span class="review-card__initial" style="background-color: ${review.initialBg}">${review.initial}</span>
+              <div>
+                <p class="review-card__author">${review.author}</p>
+                <p class="review-card__subtitle">${review.subtitle}</p>
+              </div>
+            </div>
+            <div class="review-card__stars"><span class="review-card__stars-list">${renderReviewStars(review.rating || 5)}</span><strong>${review.rating || 5}/5</strong></div>
+            <p class="review-card__text">${review.text}</p>
+          </article>
+        `,
+      )
+      .join('');
+
+    reviewsTrack.style.gridTemplateColumns = `repeat(${visibleReviews.length}, minmax(0, 1fr))`;
+
+    reviewsDots.innerHTML = Array.from({ length: totalPages })
+      .map(
+        (_, index) =>
+          `<button class="reviews-panel__dot${index === currentPage ? ' is-active' : ''}" type="button" data-reviews-dot="${index}" aria-label="Перейти к отзыву ${index + 1}"></button>`,
+      )
+      .join('');
+
+    reviewsPrev.disabled = currentPage === 0;
+    reviewsNext.disabled = currentPage >= totalPages - 1;
+  };
+
+  reviewsPlatformButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const nextPlatform = button.getAttribute('data-reviews-platform');
+      if (!nextPlatform || nextPlatform === activePlatform) return;
+
+      activePlatform = nextPlatform;
+      currentPage = 0;
+      reviewsPlatformButtons.forEach((node) => {
+        node.classList.toggle('is-active', node === button);
+      });
+      renderReviews();
+    });
+  });
+
+  reviewsPrev.addEventListener('click', () => {
+    currentPage -= 1;
+    renderReviews();
+  });
+
+  reviewsNext.addEventListener('click', () => {
+    currentPage += 1;
+    renderReviews();
+  });
+
+  reviewsDots.addEventListener('click', (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const index = Number(target.getAttribute('data-reviews-dot'));
+    if (Number.isNaN(index)) return;
+    currentPage = index;
+    renderReviews();
+  });
+
+  window.addEventListener('resize', renderReviews);
+  renderReviews();
 }
 

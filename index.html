@@ -8,6 +8,34 @@
       content="РПК Ресурс — производство и монтаж наружной рекламы в Нижнем Новгороде."
     />
     <title>РПК Ресурс</title>
+    <style>
+      html.is-initializing body {
+        opacity: 0;
+      }
+    </style>
+    <script>
+      document.documentElement.classList.add('is-initializing');
+
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+
+      if (window.location.hash === '#quiz') {
+        history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+      }
+
+      window.scrollTo(0, 0);
+
+      const finishInitialPosition = () => {
+        window.scrollTo(0, 0);
+        requestAnimationFrame(() => {
+          document.documentElement.classList.remove('is-initializing');
+        });
+      };
+
+      window.addEventListener('DOMContentLoaded', finishInitialPosition, { once: true });
+      window.addEventListener('pageshow', finishInitialPosition, { once: true });
+    </script>
     <script type="module" src="/src/main.js"></script>
   </head>
   <body>
@@ -31,10 +59,7 @@
                   <span>Написать в MAX</span>
                 </a>
               </div>
-              <address class="header__address">
-                <span>г. Нижний Новгород</span>
-                <span>ул. Красная Слобода, 9А</span>
-              </address>
+              <address class="header__address">г. Нижний Новгород, ул. Красная Слобода, 9А</address>
               <a class="button button--primary button--small" href="#quiz">Получить расчет</a>
             </div>
           </div>
@@ -53,15 +78,44 @@
                 <span class="hero__city">и области</span>
               </div>
             </div>
-            <h1>Сделаем вывеску, которую заметят ваши клиенты</h1>
+            <h1>Изготовим и установим вывеску под ключ в Нижнем Новгороде</h1>
             <p class="hero__text">
-              Берем на себя весь процесс: замер, дизайн, расчет, производство, согласование,
-              монтаж и гарантийное обслуживание.
+              Световые вывески, объёмные буквы и оформление фасадов — от дизайна и согласования до монтажа с гарантией 5 лет.
             </p>
 
             <div class="hero__actions">
-              <a class="button button--primary" href="#quiz">Получить расчет сегодня</a>
-              <a class="button button--secondary" href="#spar-showcase">Посмотреть работы</a>
+              <form class="hero-mini-form" data-hero-mini-form>
+                <div class="hero-mini-form__panel" data-hero-mini-panel>
+                  <label class="hero-mini-form__upload" data-hero-stage="upload">
+                    <input class="hero-mini-form__file" type="file" accept="image/*" data-hero-file />
+                    <span class="hero-mini-form__upload-label">Загрузить фото вывески или фасада</span>
+                    <span class="hero-mini-form__upload-note" data-hero-file-name>PNG, JPG или WEBP</span>
+                  </label>
+
+                  <label class="hero-mini-form__phone" data-hero-stage="phone" hidden>
+                    <span class="hero-mini-form__phone-label">Ваш телефон</span>
+                    <input
+                      class="hero-mini-form__phone-input"
+                      type="tel"
+                      name="hero-phone"
+                      placeholder="+7 (___) ___-__-__"
+                      autocomplete="tel"
+                      data-hero-phone
+                    />
+                  </label>
+
+                  <div class="hero-mini-form__success" data-hero-stage="success" hidden>
+                    <span class="hero-mini-form__check" aria-hidden="true"></span>
+                    <span class="hero-mini-form__timer" data-hero-timer>15:00</span>
+                    <strong data-hero-success-text>Уже рассчитываем вывеску. В ближайшие минуты с Вами свяжется менеджер</strong>
+                  </div>
+                </div>
+
+                <button class="button button--primary hero-mini-form__button" type="button" data-hero-submit>
+                  <img class="button__icon" src="/assets/hero-button-icon.png" alt="" aria-hidden="true" />
+                  <span data-hero-button-label>Рассчитать за 15 минут</span>
+                </button>
+              </form>
             </div>
 
             <p class="hero__note">
@@ -87,6 +141,7 @@
               <div>
                 <strong>1500+</strong>
                 <span>вывесок и фасадов изготовили</span>
+                <a class="stat-card__link" href="#works">Смотреть примеры</a>
               </div>
             </article>
 
@@ -97,6 +152,7 @@
               <div>
                 <strong>98%</strong>
                 <span>клиентов приходят по рекомендации</span>
+                <a class="stat-card__link" href="#reviews">Смотреть отзывы</a>
               </div>
             </article>
 
@@ -116,70 +172,13 @@
       <section class="quiz-panel" id="quiz">
         <div class="container quiz-panel__inner">
           <div class="quiz-panel__intro">
-            <h2 class="quiz-panel__title">Подберем вывеску под Ваш бизнес</h2>
-            <p class="quiz-panel__lead">
-              Ответьте на 10 вопросов и получите расчёт стоимости, подбор типа вывески и
-              консультацию специалиста
-            </p>
-
-            <div class="quiz-panel__benefits" aria-label="Преимущества квиза">
-              <article class="quiz-benefit quiz-benefit--pink">
-                <span class="quiz-benefit__icon" aria-hidden="true">
-                  <img src="/assets/raschet-15-min.png" alt="" />
-                </span>
-                <div class="quiz-benefit__text">
-                  <strong>Расчёт за 15 минут</strong>
-                  <span>Быстрый расчёт стоимости без ожидания и звонков</span>
-                </div>
-              </article>
-
-              <article class="quiz-benefit quiz-benefit--cyan">
-                <span class="quiz-benefit__icon" aria-hidden="true">
-                  <img src="/assets/podbor.png" alt="" />
-                </span>
-                <div class="quiz-benefit__text">
-                  <strong>Подбор оптимального решения</strong>
-                  <span>Подскажем лучший вариант под ваш бюджет и задачи</span>
-                </div>
-              </article>
-
-              <article class="quiz-benefit quiz-benefit--lime">
-                <span class="quiz-benefit__icon" aria-hidden="true">
-                  <img src="/assets/bez.png" alt="" />
-                </span>
-                <div class="quiz-benefit__text">
-                  <strong>Без навязчивых продаж</strong>
-                  <span>Честные рекомендации и только по делу, без спама и давления</span>
-                </div>
-              </article>
-
-              <article class="quiz-benefit quiz-benefit--yellow">
-                <span class="quiz-benefit__icon" aria-hidden="true">
-                  <img src="/assets/podarok.png" alt="" />
-                </span>
-                <div class="quiz-benefit__text">
-                  <strong>Подарок:</strong>
-                  <span>чек-лист по согласованию вывески</span>
-                </div>
-              </article>
-            </div>
+            <h2 class="quiz-panel__title">Ответьте на 3 вопроса - назовём ориентировочную стоимость и предложим подходящий вариант</h2>
           </div>
 
           <div class="quiz-panel__card">
             <div class="quiz-panel__card-top">
-              <span class="quiz-panel__step" data-quiz-step-label>Шаг 1 / 10</span>
-              <div class="quiz-panel__progress" aria-hidden="true">
-                <span class="is-active"></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
+              <span class="quiz-panel__step" data-quiz-step-label>Шаг 1 / 1</span>
+              <div class="quiz-panel__progress" aria-hidden="true"></div>
             </div>
 
             <div class="quiz-panel__stage" data-quiz-stage></div>
@@ -187,97 +186,81 @@
         </div>
       </section>
 
-      <section class="services-panel" id="services">
-        <div class="container">
-          <div class="section-head">
-            <h2 class="section-title">Изготовим рекламу под вашу задачу</h2>
-            <p class="section-subtitle">
-              Подберем конструкцию, материалы и подсветку так, чтобы вывеска хорошо смотрелась
-              днем и ночью.
-            </p>
-          </div>
+      <section class="services-section" id="services" aria-labelledby="services-title">
+        <div class="container services-section__inner">
+          <header class="services-section__header">
+            <h2 class="services-section__title" id="services-title">
+              Конкретные решения для фасада, входа и интерьера
+            </h2>
+          </header>
 
-          <div class="services-grid">
+          <div class="services-section__grid">
             <article class="service-card">
-              <span class="service-card__icon">
-                <img src="/assets/service-light-signs-icon.png" alt="" />
-              </span>
-              <div class="service-card__body">
-                <h3>Световые вывески</h3>
-                <p>
-                  Яркие вывески для фасадов, магазинов, салонов, кафе и офисов. Помогаем
-                  выделиться на улице и привлечь поток клиентов.
-                </p>
+              <img class="service-card__image" src="/assets/quiz-format-light-sign.jpg" alt="Световая вывеска" loading="lazy" />
+              <div class="service-card__content">
+                <h3 class="service-card__title">Световые вывески</h3>
+                <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость световой вывески">Узнать стоимость</button>
               </div>
             </article>
 
             <article class="service-card">
-              <span class="service-card__icon">
-                <img src="/assets/service-volume-letters-icon.png" alt="" />
-              </span>
-              <div class="service-card__body">
-                <h3>Объемные буквы</h3>
-                <p>
-                  Буквы с подсветкой и без — для фасадов, входных групп, торговых центров и
-                  интерьерного оформления.
-                </p>
+              <img class="service-card__image" src="/assets/quiz-format-volume-letters.jpg" alt="Объемные буквы" loading="lazy" />
+              <div class="service-card__content">
+                <h3 class="service-card__title">Объемные буквы</h3>
+                <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески из объемных букв">Узнать стоимость</button>
               </div>
             </article>
 
             <article class="service-card">
-              <span class="service-card__icon">
-                <img src="/assets/service-entrance-groups-icon.png" alt="" />
-              </span>
-              <div class="service-card__body">
-                <h3>Входные группы</h3>
-                <p>
-                  Оформим вход под ключ: вывеска, козырек, навигация, витрина и декоративные
-                  элементы в едином стиле.
-                </p>
+              <img class="service-card__image" src="/assets/quiz-format-entrance-group.jpg" alt="Входные группы" loading="lazy" />
+              <div class="service-card__content">
+                <h3 class="service-card__title">Входные группы</h3>
+                <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость оформления входной группы">Узнать стоимость</button>
               </div>
             </article>
 
             <article class="service-card">
-              <span class="service-card__icon">
-                <img src="/assets/service-facade-design-icon.png" alt="" />
-              </span>
-              <div class="service-card__body">
-                <h3>Оформление фасадов</h3>
-                <p>
-                  Комплексно оформляем фасады и витрины, чтобы бизнес выглядел заметно, аккуратно
-                  и профессионально.
-                </p>
+              <img class="service-card__image" src="/assets/quiz-format-facade-design.jpg" alt="Оформление фасадов" loading="lazy" />
+              <div class="service-card__content">
+                <h3 class="service-card__title">Оформление фасадов</h3>
+                <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость оформления фасада">Узнать стоимость</button>
               </div>
             </article>
 
             <article class="service-card">
-              <span class="service-card__icon">
-                <img src="/assets/service-interior-signs-icon.png" alt="" />
-              </span>
-              <div class="service-card__body">
-                <h3>Интерьерные вывески</h3>
-                <p>
-                  Создаем интерьерные вывески, логотипы и акцентные элементы для офисов, шоурумов,
-                  салонов и ресепшен-зон.
-                </p>
+              <img class="service-card__image" src="/assets/quiz-format-interior-sign.jpg" alt="Интерьерные вывески" loading="lazy" />
+              <div class="service-card__content">
+                <h3 class="service-card__title">Интерьерные вывески</h3>
+                <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость интерьерной вывески">Узнать стоимость</button>
               </div>
             </article>
 
             <article class="service-card">
-              <span class="service-card__icon">
-                <img src="/assets/service-navigation-icon.png" alt="" />
-              </span>
-              <div class="service-card__body">
-                <h3>Навигация</h3>
-                <p>
-                  Изготовим таблички, указатели, стелы и навигационные системы, чтобы клиентам было
-                  проще вас найти.
-                </p>
+              <img class="service-card__image" src="/assets/quiz-format-navigation-sign.png" alt="Навигация и таблички" loading="lazy" />
+              <div class="service-card__content">
+                <h3 class="service-card__title">Навигация и таблички</h3>
+                <button class="service-card__button" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость навигации и табличек">Узнать стоимость</button>
               </div>
             </article>
           </div>
         </div>
       </section>
+
+      <div class="service-popup" data-service-popup hidden>
+        <button class="service-popup__backdrop" type="button" aria-label="Закрыть окно" data-service-popup-close></button>
+        <div class="service-popup__dialog" role="dialog" aria-modal="true" aria-labelledby="service-popup-title">
+          <button class="service-popup__close" type="button" aria-label="Закрыть окно" data-service-popup-close></button>
+          <div class="service-popup__body">
+            <img class="service-popup__image" src="" alt="" data-service-popup-image hidden />
+            <h3 class="service-popup__title" id="service-popup-title" data-service-popup-title-target>Узнать стоимость вывески</h3>
+            <p class="service-popup__text">Оставьте телефон, и мы свяжемся с Вами, уточним детали и подготовим расчёт.</p>
+            <form class="service-popup__form" data-service-popup-form>
+              <input class="service-popup__input" type="tel" name="phone" placeholder="+7 (___) ___-__-__" autocomplete="tel" />
+              <button class="button button--primary service-popup__submit" type="submit">Отправить</button>
+            </form>
+          </div>
+        </div>
+      </div>
 
       <section class="works-showcase-panel" id="spar-showcase">
         <div class="container">
@@ -520,12 +503,19 @@
 
           <div class="works-grid">
             <article class="work-card work-card--01">
-              <button class="work-card__photo" type="button" data-work-card-open data-work-card-image="/assets/union-mebel.jpg" data-work-card-position="50% 34%" aria-label="Увеличить фото Юнион Мебель" style="--work-card-image: url('/assets/union-mebel.jpg'); --work-card-position: 50% 34%;">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/union-mebel.jpg'); --work-card-position: 50% 34%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/union-mebel.jpg" data-work-card-position="50% 34%" aria-label="Увеличить фото Юнион Мебель"></button>
                 <div class="work-card__caption">
                   <h3>Юнион Мебель</h3>
                   <p>Фасадное оформление</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Объемные буквы</span>
+                    <span class="work-card__chip">Фасад</span>
+                    <span class="work-card__chip">Монтаж</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Юнион Мебель">Узнать стоимость такой же вывески</button>
                 </div>
-              </button>
+              </div>
             </article>
 
             <article class="work-card work-card--02">
@@ -546,61 +536,109 @@
                 </button>
                 <div class="work-card__caption">
                   <h3>Wine Маркет</h3>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Световая вывеска</span>
+                    <span class="work-card__chip">Витрина</span>
+                    <span class="work-card__chip">Дизайн</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Wine Маркет">Узнать стоимость такой же вывески</button>
                 </div>
               </div>
             </article>
 
             <article class="work-card work-card--03">
-              <button class="work-card__photo" type="button" data-work-card-open data-work-card-image="/assets/stroynitura.jpg" data-work-card-position="50% 20%" aria-label="Увеличить фото Стройнитура" style="--work-card-image: url('/assets/stroynitura.jpg'); --work-card-position: 50% 20%;">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/stroynitura.jpg'); --work-card-position: 50% 20%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/stroynitura.jpg" data-work-card-position="50% 20%" aria-label="Увеличить фото Стройнитура"></button>
                 <div class="work-card__caption">
                   <h3>Стройнитура</h3>
                   <p>Яркая вывеска для магазина товаров для ремонта</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Световой короб</span>
+                    <span class="work-card__chip">Магазин</span>
+                    <span class="work-card__chip">Под ключ</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Стройнитуры">Узнать стоимость такой же вывески</button>
                 </div>
-              </button>
+              </div>
             </article>
 
             <article class="work-card work-card--04">
-              <button class="work-card__photo" type="button" data-work-card-open data-work-card-image="/assets/flowers-for-you.jpg" data-work-card-position="50% 22%" aria-label="Увеличить фото Цветы для вас" style="--work-card-image: url('/assets/flowers-for-you.jpg'); --work-card-position: 50% 22%;">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/flowers-for-you.jpg'); --work-card-position: 50% 22%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/flowers-for-you.jpg" data-work-card-position="50% 22%" aria-label="Увеличить фото Цветы для вас"></button>
                 <div class="work-card__caption">
                   <h3>Цветы для вас</h3>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Неон</span>
+                    <span class="work-card__chip">Интерьер</span>
+                    <span class="work-card__chip">Логотип</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для магазина Цветы для вас">Узнать стоимость такой же вывески</button>
                 </div>
-              </button>
+              </div>
             </article>
 
             <article class="work-card work-card--05">
-              <button class="work-card__photo" type="button" data-work-card-open data-work-card-image="/assets/mir-tepla.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Мир Тепла" style="--work-card-image: url('/assets/mir-tepla.jpg'); --work-card-position: 50% 18%;">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/mir-tepla.jpg'); --work-card-position: 50% 18%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/mir-tepla.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Мир Тепла"></button>
                 <div class="work-card__caption">
                   <h3>Мир Тепла</h3>
                   <p>Теплый акцент для фасада и уверенная видимость с улицы</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Фасад</span>
+                    <span class="work-card__chip">Подсветка</span>
+                    <span class="work-card__chip">Согласование</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Мир Тепла">Узнать стоимость такой же вывески</button>
                 </div>
-              </button>
+              </div>
             </article>
 
             <article class="work-card work-card--06">
-              <button class="work-card__photo" type="button" data-work-card-open data-work-card-image="/assets/sakses.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Саксэс" style="--work-card-image: url('/assets/sakses.jpg'); --work-card-position: 50% 18%;">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/sakses.jpg'); --work-card-position: 50% 18%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/sakses.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Саксэс"></button>
                 <div class="work-card__caption">
                   <h3>Саксэс</h3>
                   <p>Яркий фасадный акцент для заметной точки продаж</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Входная группа</span>
+                    <span class="work-card__chip">Фасад</span>
+                    <span class="work-card__chip">Монтаж</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Саксэс">Узнать стоимость такой же вывески</button>
                 </div>
-              </button>
+              </div>
             </article>
 
             <article class="work-card work-card--07">
-              <button class="work-card__photo" type="button" data-work-card-open data-work-card-image="/assets/moon-salon.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Салон красоты Moon" style="--work-card-image: url('/assets/moon-salon.jpg'); --work-card-position: 50% 18%;">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/moon-salon.jpg'); --work-card-position: 50% 18%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/moon-salon.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Салон красоты Moon"></button>
                 <div class="work-card__caption">
                   <h3>Салон красоты Moon</h3>
                   <p>Стильная вывеска для заметного входа</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Объемные буквы</span>
+                    <span class="work-card__chip">Салон</span>
+                    <span class="work-card__chip">Под ключ</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для салона красоты Moon">Узнать стоимость такой же вывески</button>
                 </div>
-              </button>
+              </div>
             </article>
 
             <article class="work-card work-card--08">
-              <button class="work-card__photo" type="button" data-work-card-open data-work-card-image="/assets/stroymag.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Строймаг" style="--work-card-image: url('/assets/stroymag.jpg'); --work-card-position: 50% 18%;">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/stroymag.jpg'); --work-card-position: 50% 18%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/stroymag.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Строймаг"></button>
                 <div class="work-card__caption">
                   <h3>Строймаг</h3>
                   <p>Практичная вывеска для магазина стройматериалов</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Световой короб</span>
+                    <span class="work-card__chip">Магазин</span>
+                    <span class="work-card__chip">Фасад</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Строймаг">Узнать стоимость такой же вывески</button>
                 </div>
-              </button>
+              </div>
             </article>
 
             <article class="work-card work-card--09">
@@ -622,6 +660,12 @@
                 <div class="work-card__caption">
                   <h3>Вольтаж Сервис</h3>
                   <p>Точный акцент для мастерской с уличной видимостью</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Фасад</span>
+                    <span class="work-card__chip">Сервис</span>
+                    <span class="work-card__chip">Подсветка</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Вольтаж Сервис">Узнать стоимость такой же вывески</button>
                 </div>
               </div>
             </article>
@@ -646,6 +690,12 @@
                 <div class="work-card__caption">
                   <h3>Японские Чизкейки</h3>
                   <p>Нежная подача и заметный акцент для витрины</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Витрина</span>
+                    <span class="work-card__chip">Кафе</span>
+                    <span class="work-card__chip">Лайтбокс</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Японские Чизкейки">Узнать стоимость такой же вывески</button>
                 </div>
               </div>
             </article>
@@ -673,26 +723,46 @@
                 <div class="work-card__caption">
                   <h3>Сеть магазинов Малинка</h3>
                   <p>Единый стиль для витрин и фасадов сети</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Сеть</span>
+                    <span class="work-card__chip">Навигация</span>
+                    <span class="work-card__chip">Фасады</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для сети магазинов Малинка">Узнать стоимость такой же вывески</button>
                 </div>
               </div>
             </article>
 
             <article class="work-card work-card--12">
-              <button class="work-card__photo" type="button" data-work-card-open data-work-card-image="/assets/strigino-hotel-restaurant.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Отель-ресторан Стригино" style="--work-card-image: url('/assets/strigino-hotel-restaurant.jpg'); --work-card-position: 50% 18%;">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/strigino-hotel-restaurant.jpg'); --work-card-position: 50% 18%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/strigino-hotel-restaurant.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Отель-ресторан Стригино"></button>
                 <div class="work-card__caption">
                   <h3>Отель-ресторан Стригино</h3>
                   <p>Статусное оформление для входной группы и фасада</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Отель</span>
+                    <span class="work-card__chip">Входная группа</span>
+                    <span class="work-card__chip">Премиум</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для отеля-ресторана Стригино">Узнать стоимость такой же вывески</button>
                 </div>
-              </button>
+              </div>
             </article>
 
             <article class="work-card work-card--13">
-              <button class="work-card__photo" type="button" data-work-card-open data-work-card-image="/assets/severnaya-dolina.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Северная долина" style="--work-card-image: url('/assets/severnaya-dolina.jpg'); --work-card-position: 50% 18%;">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/severnaya-dolina.jpg'); --work-card-position: 50% 18%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/severnaya-dolina.jpg" data-work-card-position="50% 18%" aria-label="Увеличить фото Северная долина"></button>
                 <div class="work-card__caption">
                   <h3>Северная долина</h3>
                   <p>Производство молочной продукции</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Производство</span>
+                    <span class="work-card__chip">Фасад</span>
+                    <span class="work-card__chip">Навигация</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Северная долина">Узнать стоимость такой же вывески</button>
                 </div>
-              </button>
+              </div>
             </article>
           </div>
 
@@ -701,6 +771,36 @@
               Показать еще
             </button>
           </div>
+        </div>
+      </section>
+
+      <section class="reviews-panel" id="reviews">
+        <div class="container">
+          <div class="reviews-panel__head">
+            <h2 class="reviews-panel__title">Что говорят клиенты после запуска вывески</h2>
+            <p class="reviews-panel__lead">
+              Реальные отзывы о сроках, монтаже, коммуникации и результате.
+            </p>
+          </div>
+
+          <div class="reviews-panel__platforms" data-reviews-platforms>
+            <button class="reviews-panel__platform is-active" type="button" data-reviews-platform="avito">
+              <img src="/assets/avito-anons-68.png" alt="" width="28" height="28" aria-hidden="true" />
+              <span>Avito</span>
+            </button>
+            <button class="reviews-panel__platform" type="button" data-reviews-platform="yandex">
+              <img src="/assets/yandex-maps-68.png" alt="" width="28" height="28" aria-hidden="true" />
+              <span>Яндекс Карты</span>
+            </button>
+          </div>
+
+          <div class="reviews-panel__slider">
+            <button class="reviews-panel__nav reviews-panel__nav--prev" type="button" data-reviews-prev aria-label="Предыдущие отзывы"></button>
+            <div class="reviews-panel__track" data-reviews-track></div>
+            <button class="reviews-panel__nav reviews-panel__nav--next" type="button" data-reviews-next aria-label="Следующие отзывы"></button>
+          </div>
+
+          <div class="reviews-panel__dots" data-reviews-dots aria-label="Навигация по отзывам"></div>
         </div>
       </section>
 
@@ -717,72 +817,136 @@
           <div class="process-grid">
             <div class="process-row">
               <article class="process-card">
-                <span class="process-card__number">01</span>
-                <span class="process-card__icon">
-                  <img src="/assets/zamer.png" alt="" />
+                <span class="process-card__number">
+                  <img src="/assets/process-time-icon.svg" alt="" aria-hidden="true" />
+                  <span>15 мин</span>
                 </span>
-                <h3>Замер</h3>
-                <p>
-                  Приезжаем на объект, оцениваем фасад, точки крепления, размеры и условия
-                  монтажа.
-                </p>
+                <span class="process-card__icon">
+                  <img src="/assets/raschet-15-min.png" alt="" />
+                </span>
+                <h3>Фото и предварительный расчёт</h3>
+                <p>Получаем фото фасада или места установки и быстро называем ориентир по стоимости.</p>
+                <div class="process-card__progress" aria-hidden="true">
+                  <span class="process-card__progress-track">
+                    <span class="process-card__progress-fill" style="width: 20%"></span>
+                  </span>
+                  <span class="process-card__progress-value">20%</span>
+                </div>
               </article>
               <article class="process-card">
-                <span class="process-card__number">02</span>
+                <span class="process-card__number">
+                  <img src="/assets/process-time-icon.svg" alt="" aria-hidden="true" />
+                  <span>1 день</span>
+                </span>
                 <span class="process-card__icon">
                   <img src="/assets/design.png" alt="" />
                 </span>
-                <h3>Дизайн</h3>
-                <p>
-                  Готовим макет и визуализацию, чтобы вы заранее увидели, как будет выглядеть
-                  вывеска.
-                </p>
+                <h3>Замер и дизайн</h3>
+                <p>Выезжаем на объект, снимаем размеры и готовим макет с визуализацией будущей вывески.</p>
+                <div class="process-card__progress" aria-hidden="true">
+                  <span class="process-card__progress-track">
+                    <span class="process-card__progress-fill" style="width: 40%"></span>
+                  </span>
+                  <span class="process-card__progress-value">40%</span>
+                </div>
               </article>
               <article class="process-card">
-                <span class="process-card__number">03</span>
+                <span class="process-card__number">
+                  <img src="/assets/process-time-icon.svg" alt="" aria-hidden="true" />
+                  <span>1 день</span>
+                </span>
                 <span class="process-card__icon">
                   <img src="/assets/process-calculation-icon.png" alt="" />
                 </span>
-                <h3>Расчет</h3>
-                <p>Подбираем материалы, подсветку и конструкцию. Фиксируем стоимость до начала работ.</p>
+                <h3>Договор и фиксированная цена</h3>
+                <p>Согласовываем материалы и конструкцию, подписываем договор и фиксируем стоимость работ.</p>
+                <div class="process-card__progress" aria-hidden="true">
+                  <span class="process-card__progress-track">
+                    <span class="process-card__progress-fill" style="width: 60%"></span>
+                  </span>
+                  <span class="process-card__progress-value">60%</span>
+                </div>
               </article>
               <article class="process-card">
-                <span class="process-card__number">04</span>
+                <span class="process-card__number">
+                  <img src="/assets/process-time-icon.svg" alt="" aria-hidden="true" />
+                  <span>1-7 дней</span>
+                </span>
                 <span class="process-card__icon">
                   <img src="/assets/process-production-icon.png" alt="" />
                 </span>
                 <h3>Производство</h3>
-                <p>
-                  Изготавливаем вывеску на собственном производстве и контролируем качество на
-                  каждом этапе.
-                </p>
+                <p>Изготавливаем вывеску на производстве, соблюдая сроки и контролируя качество сборки.</p>
+                <div class="process-card__progress" aria-hidden="true">
+                  <span class="process-card__progress-track">
+                    <span class="process-card__progress-fill" style="width: 84%"></span>
+                  </span>
+                  <span class="process-card__progress-value">84%</span>
+                </div>
               </article>
               <article class="process-card">
-                <span class="process-card__number">05</span>
-                <span class="process-card__icon">
-                  <img src="/assets/process-approval-icon.png" alt="" />
+                <span class="process-card__number">
+                  <img src="/assets/process-time-icon.svg" alt="" aria-hidden="true" />
+                  <span>1-2 дня</span>
                 </span>
-                <h3>Согласование</h3>
-                <p>Помогаем подготовить документы и согласовать размещение рекламы, если это требуется.</p>
-              </article>
-              <article class="process-card">
-                <span class="process-card__number">06</span>
                 <span class="process-card__icon">
-                  <img src="/assets/process-montage-icon.png" alt="" />
+                  <img src="/assets/stat-guarantee-icon.png" alt="" />
                 </span>
-                <h3>Монтаж</h3>
-                <p>Устанавливаем конструкцию, подключаем подсветку и проверяем работу на объекте.</p>
-              </article>
-              <article class="process-card">
-                <span class="process-card__number">07</span>
-                <span class="process-card__icon">
-                  <img src="/assets/process-guarantee-icon.png" alt="" />
-                </span>
-                <h3>Гарантия</h3>
-                <p>Даем гарантию на работы и остаемся на связи после монтажа.</p>
+                <h3>Монтаж и гарантия до 5 лет</h3>
+                <p>Устанавливаем вывеску на объекте, подключаем подсветку и даём гарантию до 5 лет.</p>
+                <div class="process-card__progress" aria-hidden="true">
+                  <span class="process-card__progress-track">
+                    <span class="process-card__progress-fill" style="width: 100%"></span>
+                  </span>
+                  <span class="process-card__progress-value">100%</span>
+                </div>
               </article>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section class="process-cta-panel" aria-labelledby="process-cta-title">
+        <div class="container">
+          <div class="process-cta-panel__head">
+            <h2 class="section-title process-cta-title" id="process-cta-title">Рассчитайте стоимость вывески по фото за 15 минут</h2>
+          </div>
+          <form class="hero-mini-form hero-mini-form--wide hero-mini-form--static" data-process-cta-form>
+            <div class="hero-mini-form__panel" data-process-cta-field>
+              <label class="hero-mini-form__upload">
+                <input class="hero-mini-form__file" type="file" accept="image/*" data-process-cta-file />
+                <span class="hero-mini-form__upload-label">Загрузить фото вывески или фасада</span>
+                <span class="hero-mini-form__upload-note" data-process-cta-file-name>PNG, JPG или WEBP</span>
+              </label>
+            </div>
+
+            <div class="hero-mini-form__panel" data-process-cta-field>
+              <label class="hero-mini-form__phone">
+                <span class="hero-mini-form__phone-label">Ваш телефон</span>
+                <input
+                  class="hero-mini-form__phone-input"
+                  type="tel"
+                  name="process-cta-phone"
+                  placeholder="+7 (___) ___-__-__"
+                  autocomplete="tel"
+                  data-process-cta-phone
+                />
+              </label>
+            </div>
+
+            <div class="hero-mini-form__panel hero-mini-form__panel--success" data-process-cta-success hidden>
+              <div class="hero-mini-form__success">
+                <span class="hero-mini-form__check" aria-hidden="true"></span>
+                <span class="hero-mini-form__timer" data-process-cta-timer>15:00</span>
+                <strong data-process-cta-text>Уже рассчитываем вывеску. В ближайшие минуты с Вами свяжется менеджер</strong>
+              </div>
+            </div>
+
+            <button class="button button--primary hero-mini-form__button" type="submit" data-process-cta-submit>
+              <img class="button__icon" src="/assets/hero-button-icon.png" alt="" aria-hidden="true" />
+              <span>Рассчитать за 15 минут</span>
+            </button>
+          </form>
         </div>
       </section>
 
