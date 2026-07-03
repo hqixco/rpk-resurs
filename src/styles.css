@@ -287,11 +287,12 @@ img {
   grid-column: 2;
   grid-row: 1;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   align-self: center;
   min-width: 0;
-  text-decoration: none;
+  width: min(100%, 560px);
+  height: 450px;
 }
 
 .hero__visual-chip {
@@ -318,12 +319,132 @@ img {
   transform: translateX(-50%);
 }
 
-.hero__visual-image {
-  width: min(100%, 560px);
-  max-height: 700px;
-  object-fit: contain;
-  object-position: center bottom;
-  filter: drop-shadow(0 24px 48px rgba(6, 7, 17, 0.34));
+.hero-slider__viewport {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 34px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0.06)),
+    rgba(12, 13, 25, 0.68);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 28px 70px rgba(5, 6, 16, 0.36);
+  backdrop-filter: blur(12px);
+}
+
+.hero-slider__track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.45s ease;
+}
+
+.hero-slider__slide {
+  flex: 0 0 100%;
+  min-width: 100%;
+  margin: 0;
+}
+
+.hero-slider__card {
+  width: 100%;
+  height: 100%;
+  border-radius: 34px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.hero-slider__card-photo {
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: auto;
+}
+
+.hero-slider__card-photo:hover,
+.hero-slider__card-photo:focus-visible {
+  transform: none;
+  filter: none;
+}
+
+.hero-slider__caption {
+  padding: 30px 24px 24px;
+  gap: 10px;
+}
+
+.hero-slider__caption h3 {
+  font-size: 24px;
+  line-height: 1.05;
+}
+
+.hero-slider__caption p {
+  max-width: 420px;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.hero-slider__caption .work-card__chips {
+  gap: 9px;
+}
+
+.hero-slider__caption .work-card__chip {
+  min-height: 30px;
+  padding: 0 12px;
+  font-size: 12px;
+}
+
+.hero-slider__caption .work-card__cost {
+  min-width: 220px;
+  min-height: 44px;
+  font-size: 13px;
+}
+
+.hero-slider__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(7, 8, 18, 0.42);
+  box-shadow: 0 16px 32px rgba(5, 6, 16, 0.2);
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transform: translateY(-50%);
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.hero-slider__nav::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 11px;
+  height: 11px;
+  border-top: 2px solid #fff;
+  border-right: 2px solid #fff;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.hero-slider__nav:hover,
+.hero-slider__nav:focus-visible {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.hero-slider__nav:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.72);
+  outline-offset: 3px;
+}
+
+.hero-slider__nav--prev {
+  left: 18px;
+}
+
+.hero-slider__nav--prev::before {
+  transform: translate(-38%, -50%) rotate(-135deg);
+}
+
+.hero-slider__nav--next {
+  right: 18px;
 }
 
 .hero__kicker {
@@ -2739,6 +2860,7 @@ img {
   color: #fff;
 }
 
+
 .work-card__caption:empty {
   display: none;
 }
@@ -3671,9 +3793,46 @@ img {
     font-size: 12px;
   }
 
-  .hero__visual-image {
-    width: min(100%, 420px);
-    max-height: 420px;
+  .hero-slider__viewport {
+    border-radius: 26px;
+  }
+
+  .hero-slider__card {
+    border-radius: 26px;
+  }
+
+  .hero-slider__card-photo {
+    min-height: 420px;
+  }
+
+  .hero-slider__nav {
+    width: 42px;
+    height: 42px;
+  }
+
+  .hero-slider__nav--prev {
+    left: 12px;
+  }
+
+  .hero-slider__nav--next {
+    right: 12px;
+  }
+
+  .hero-slider__caption {
+    padding: 22px 18px 18px;
+  }
+
+  .hero-slider__caption h3 {
+    font-size: 19px;
+  }
+
+  .hero-slider__caption p {
+    font-size: 13px;
+  }
+
+  .hero-slider__caption .work-card__cost {
+    min-width: 0;
+    width: 100%;
   }
 
   .stats {
@@ -4223,6 +4382,16 @@ img {
 
   .button__icon {
     width: 27px;
+  }
+
+  .hero__visual {
+    height: 300px;
+    min-height: 300px;
+  }
+
+  .hero-slider__card-photo {
+    height: 100%;
+    min-height: 300px;
   }
 
   .contacts-panel .container {

@@ -135,14 +135,24 @@
             </p>
           </div>
 
-          <a class="hero__visual" href="#spar-showcase" aria-label="Перейти к блоку с работой SPAR">
-            <span class="hero__visual-chip">Наши работы</span>
-            <img
-              class="hero__visual-image"
-              src="/assets/hero-sign-right.png"
-              alt=""
-            />
-          </a>
+          <div class="hero__visual hero-slider" data-hero-slider aria-label="Наши работы">
+            <a class="hero__visual-chip" href="#spar-showcase">Наши работы</a>
+            <div class="hero-slider__viewport">
+              <div class="hero-slider__track" data-hero-slider-track></div>
+            </div>
+            <button
+              class="hero-slider__nav hero-slider__nav--prev"
+              type="button"
+              data-hero-slider-prev
+              aria-label="Предыдущее фото"
+            ></button>
+            <button
+              class="hero-slider__nav hero-slider__nav--next"
+              type="button"
+              data-hero-slider-next
+              aria-label="Следующее фото"
+            ></button>
+          </div>
 
           <div class="stats" aria-label="Статистика компании">
             <article class="stat-card">
@@ -788,6 +798,86 @@
                     <span class="work-card__chip">Навигация</span>
                   </div>
                   <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Северная долина">Узнать стоимость такой же вывески</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card work-card--14">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/alibi-bar.png'); --work-card-position: 50% 16%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/alibi-bar.png" data-work-card-position="50% 16%" aria-label="Увеличить фото ALIBI bar"></button>
+                <div class="work-card__caption">
+                  <h3>ALIBI bar</h3>
+                  <p>Арочная входная группа с объемными буквами для бара</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Бар</span>
+                    <span class="work-card__chip">Входная группа</span>
+                    <span class="work-card__chip">Объемные буквы</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для ALIBI bar">Узнать стоимость такой же вывески</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card work-card--15">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/renaissance-insurance.png'); --work-card-position: 50% 34%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/renaissance-insurance.png" data-work-card-position="50% 34%" aria-label="Увеличить фото Ренессанс Страхование"></button>
+                <div class="work-card__caption">
+                  <h3>Ренессанс Страхование</h3>
+                  <p>Фасадная вывеска с объемными буквами для офиса страховой компании</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Офис</span>
+                    <span class="work-card__chip">Объемные буквы</span>
+                    <span class="work-card__chip">Фасад</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для Ренессанс Страхование">Узнать стоимость такой же вывески</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card work-card--16">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/cni-burevestnik.png'); --work-card-position: 50% 48%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/cni-burevestnik.png" data-work-card-position="50% 48%" aria-label="Увеличить фото ЦНИ Буревестник"></button>
+                <div class="work-card__caption">
+                  <h3>ЦНИ «Буревестник»</h3>
+                  <p>Крупная фасадная вывеска с подсветкой для центрального входа</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Фасад</span>
+                    <span class="work-card__chip">Подсветка</span>
+                    <span class="work-card__chip">Объемные буквы</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для ЦНИ Буревестник">Узнать стоимость такой же вывески</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card work-card--17">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/sculptors-barbershop.png'); --work-card-position: 50% 18%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/sculptors-barbershop.png" data-work-card-position="50% 18%" aria-label="Увеличить фото SCULPTORS"></button>
+                <div class="work-card__caption">
+                  <h3>SCULPTORS</h3>
+                  <p>Фасадный лайтбокс для барбершопа с контрастной фирменной графикой</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Барбершоп</span>
+                    <span class="work-card__chip">Лайтбокс</span>
+                    <span class="work-card__chip">Фасад</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для SCULPTORS">Узнать стоимость такой же вывески</button>
+                </div>
+              </div>
+            </article>
+
+            <article class="work-card work-card--18">
+              <div class="work-card__photo" style="--work-card-image: url('/assets/medicine-everyday-therapy.png'); --work-card-position: 50% 42%;">
+                <button class="work-card__open" type="button" data-work-card-open data-work-card-image="/assets/medicine-everyday-therapy.png" data-work-card-position="50% 42%" aria-label="Увеличить фото medicine everyday therapy"></button>
+                <div class="work-card__caption">
+                  <h3>medicine</h3>
+                  <p>Световая фасадная вывеска для магазина с чистой типографикой</p>
+                  <div class="work-card__chips">
+                    <span class="work-card__chip">Магазин</span>
+                    <span class="work-card__chip">Световая вывеска</span>
+                    <span class="work-card__chip">Фасад</span>
+                  </div>
+                  <button class="work-card__cost" type="button" data-service-popup-open data-service-popup-title="Узнать стоимость вывески для medicine">Узнать стоимость такой же вывески</button>
                 </div>
               </div>
             </article>

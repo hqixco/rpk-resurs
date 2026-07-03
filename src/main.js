@@ -105,6 +105,100 @@ const initPhoneMasks = (root = document) => {
 
 initPhoneMasks();
 
+const heroSlider = document.querySelector('[data-hero-slider]');
+if (heroSlider instanceof HTMLElement) {
+  const track = heroSlider.querySelector('[data-hero-slider-track]');
+  const prevButton = heroSlider.querySelector('[data-hero-slider-prev]');
+  const nextButton = heroSlider.querySelector('[data-hero-slider-next]');
+  const sourceCards = Array.from(document.querySelectorAll('.works-grid .work-card')).reverse();
+  const autoplayDelay = 5000;
+  let currentSlideIndex = 0;
+  let autoplayId = null;
+  let slides = [];
+
+  if (track instanceof HTMLElement) {
+    sourceCards.forEach((card, index) => {
+      const slide = document.createElement('figure');
+      slide.className = `hero-slider__slide${index === 0 ? ' is-active' : ''}`;
+      slide.setAttribute('data-hero-slide', '');
+      slide.setAttribute('aria-hidden', index === 0 ? 'false' : 'true');
+
+      const clone = card.cloneNode(true);
+      if (clone instanceof HTMLElement) {
+        clone.classList.add('hero-slider__card');
+
+        clone.querySelectorAll('.work-card__nav').forEach((button) => {
+          button.remove();
+        });
+
+        const photo = clone.querySelector('.work-card__photo');
+        if (photo instanceof HTMLElement) {
+          photo.classList.add('hero-slider__card-photo');
+        }
+
+        const caption = clone.querySelector('.work-card__caption');
+        if (caption instanceof HTMLElement) {
+          caption.classList.add('hero-slider__caption');
+        }
+      }
+
+      slide.append(clone);
+      track.append(slide);
+    });
+
+    slides = Array.from(heroSlider.querySelectorAll('[data-hero-slide]'));
+  }
+
+  const updateHeroSlider = (index) => {
+    if (!(track instanceof HTMLElement) || slides.length === 0) return;
+
+    currentSlideIndex = (index + slides.length) % slides.length;
+    track.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+
+    slides.forEach((slide, slideIndex) => {
+      slide.classList.toggle('is-active', slideIndex === currentSlideIndex);
+      slide.setAttribute('aria-hidden', slideIndex === currentSlideIndex ? 'false' : 'true');
+    });
+  };
+
+  const stopHeroSliderAutoplay = () => {
+    if (!autoplayId) return;
+    window.clearInterval(autoplayId);
+    autoplayId = null;
+  };
+
+  const startHeroSliderAutoplay = () => {
+    stopHeroSliderAutoplay();
+    if (slides.length < 2) return;
+    autoplayId = window.setInterval(() => {
+      updateHeroSlider(currentSlideIndex + 1);
+    }, autoplayDelay);
+  };
+
+  prevButton?.addEventListener('click', () => {
+    updateHeroSlider(currentSlideIndex - 1);
+    startHeroSliderAutoplay();
+  });
+
+  nextButton?.addEventListener('click', () => {
+    updateHeroSlider(currentSlideIndex + 1);
+    startHeroSliderAutoplay();
+  });
+
+  heroSlider.addEventListener('mouseenter', stopHeroSliderAutoplay);
+  heroSlider.addEventListener('mouseleave', startHeroSliderAutoplay);
+  heroSlider.addEventListener('focusin', stopHeroSliderAutoplay);
+  heroSlider.addEventListener('focusout', (event) => {
+    if (event.relatedTarget instanceof Node && heroSlider.contains(event.relatedTarget)) {
+      return;
+    }
+    startHeroSliderAutoplay();
+  });
+
+  updateHeroSlider(0);
+  startHeroSliderAutoplay();
+}
+
 const heroMiniForm = document.querySelector('[data-hero-mini-form]');
 if (heroMiniForm instanceof HTMLFormElement) {
   const stages = {
